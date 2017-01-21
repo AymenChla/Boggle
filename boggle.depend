@@ -257,3 +257,66 @@
 	<string.h>
 	"game.h"
 
+1481695780 source:c:\users\acer\desktop\boggle\boggle\joueur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"joueur.h"
+
+1481695915 c:\users\acer\desktop\boggle\boggle\joueur.h
+	"score.h"
+
+1481695930 c:\users\acer\desktop\boggle\boggle\score.h
+	"generale.h"
+
+1482980485 c:\users\acer\desktop\boggle\boggle\generale.h
+
+1483508085 source:c:\users\acer\desktop\boggle\boggle\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"game.h"
+
+1484970150 c:\users\acer\desktop\boggle\boggle\game.h
+	<SDL_ttf.h>
+	"plateau.h"
+	"joueur.h"
+
+1484968853 c:\users\acer\desktop\boggle\boggle\plateau.h
+	<SDL.h>
+	"generale.h"
+	"pile.h"
+
+1483486855 c:\users\acer\desktop\boggle\boggle\pile.h
+	"generale.h"
+
+1483487003 source:c:\users\acer\desktop\boggle\boggle\pile.c
+	<stdio.h>
+	<stdlib.h>
+	"pile.h"
+
+1484964018 source:c:\users\acer\desktop\boggle\boggle\plateau.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"plateau.h"
+	"generale.h"
+	"game.h"
+
+1481695795 source:c:\users\acer\desktop\boggle\boggle\score.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"score.h"
+
+1484971405 source:c:\users\acer\desktop\boggle\boggle\game.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<SDL.h>
+	<SDL_ttf.h>
+	"game.h"
+	"pile.h"
+

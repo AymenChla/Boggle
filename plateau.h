@@ -15,12 +15,20 @@
     }Case;
 
     typedef struct {
+
+        //pour la permission du choix du dé
         Pile *coordonnee_lettre;
+
+        char mot_courant[17];
         int taille_mot_courant;
+
         SDL_Rect position;
         SDL_Surface *surface_plateau;
         Case cases[4][4];
+
+        //for future version
         int nb_mots;
+
     }Plateau;
 
 

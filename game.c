@@ -10,6 +10,12 @@
 #include "game.h"
 #include "pile.h"
 
+void print_(SDL_KeyboardEvent *key)
+{
+        fprintf(stdout, "%c", (char)key->keysym.unicode);
+
+}
+
 void error(char *msg)
 {
     fprintf(stderr,"%s: %s\n",msg,SDL_GetError());
@@ -94,9 +100,9 @@ void play_game(Game myGame)
     int temp_actuel=0,temp_precedent=0;
     int secondes=1000*60*3;
     char time[6];
-    SDL_Rect position_timer;
-    position_timer.x=0;
-    position_timer.y=0;
+    SDL_Rect position_relatif;
+    position_relatif.x=0;
+    position_relatif.y=0;
 
     position.x = (myGame.plateau->cases[i][j].surface_case->w-myGame.plateau->cases[i][j].caractere->w)/2;
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
@@ -181,23 +187,46 @@ void play_game(Game myGame)
 
                                     myGame.plateau->cases[i][j].clicked=true;
                                     empiler(&myGame.plateau->coordonnee_lettre,i,j);
-                                    myGame.plateau->taille_mot_courant++;
+                                    myGame.plateau->mot_courant[myGame.plateau->taille_mot_courant++]=myGame.plateau->cases[i][j].lettre_face;
+                                    myGame.plateau->mot_courant[myGame.plateau->taille_mot_courant]='\0';
+
+
 
                                     SDL_FillRect(myGame.plateau->cases[i][j].surface_case,NULL,couleur_click);
                                     SDL_BlitSurface(myGame.plateau->cases[i][j].caractere,NULL,myGame.plateau->cases[i][j].surface_case,&position);
                                     SDL_BlitSurface(myGame.plateau->cases[i][j].surface_case,NULL,myGame.plateau->surface_plateau,&myGame.plateau->cases[i][j].position);
                                     SDL_BlitSurface(myGame.plateau->surface_plateau,NULL,myGame.screen,&myGame.plateau->position);
+
+
+
+                                   //actualiser affichage du mot courant
+                                    SDL_FillRect(myGame.btn_outils->surface_mot_courant,NULL,SDL_MapRGB(myGame.screen->format,45,75,20));
+                                    myGame.btn_outils->mot_courant=TTF_RenderText_Blended(myGame.police,myGame.plateau->mot_courant,couleurBlanche);
+                                    myGame.btn_outils->position_mot_courant.x = myGame.plateau->position.x;
+                                    myGame.btn_outils->position_mot_courant.y = myGame.plateau->position.y+TAILLE_PLATEAU+10;
+                                    SDL_BlitSurface(myGame.btn_outils->mot_courant,NULL,myGame.btn_outils->surface_mot_courant,&position_relatif);
+                                    SDL_BlitSurface(myGame.btn_outils->surface_mot_courant,NULL,myGame.screen,&myGame.btn_outils->position_mot_courant);
                                }
                                //pour retirer le clique
                                else if(myGame.plateau->cases[i][j].clicked == true && myGame.plateau->coordonnee_lettre->coord.i==i && myGame.plateau->coordonnee_lettre->coord.j==j)
                                {
+
                                     myGame.plateau->cases[i][j].clicked = false;
                                     depiler(&myGame.plateau->coordonnee_lettre);
-                                    myGame.plateau->taille_mot_courant--;
+                                    myGame.plateau->mot_courant[--myGame.plateau->taille_mot_courant]='\0';
                                     SDL_FillRect(myGame.plateau->cases[i][j].surface_case,NULL,couleur_par_defaut);
                                     SDL_BlitSurface(myGame.plateau->cases[i][j].caractere,NULL,myGame.plateau->cases[i][j].surface_case,&position);
                                     SDL_BlitSurface(myGame.plateau->cases[i][j].surface_case,NULL,myGame.plateau->surface_plateau,&myGame.plateau->cases[i][j].position);
                                     SDL_BlitSurface(myGame.plateau->surface_plateau,NULL,myGame.screen,&myGame.plateau->position);
+
+
+                                     //actualiser affichage du mot courant
+                                    SDL_FillRect(myGame.btn_outils->surface_mot_courant,NULL,SDL_MapRGB(myGame.screen->format,45,75,20));
+                                    myGame.btn_outils->mot_courant=TTF_RenderText_Blended(myGame.police,myGame.plateau->mot_courant,couleurBlanche);
+                                    myGame.btn_outils->position_mot_courant.x = myGame.plateau->position.x;
+                                    myGame.btn_outils->position_mot_courant.y = myGame.plateau->position.y+TAILLE_PLATEAU+10;
+                                    SDL_BlitSurface(myGame.btn_outils->mot_courant,NULL,myGame.btn_outils->surface_mot_courant,&position_relatif);
+                                    SDL_BlitSurface(myGame.btn_outils->surface_mot_courant,NULL,myGame.screen,&myGame.btn_outils->position_mot_courant);
                                }
 
                             }
@@ -237,7 +266,7 @@ void play_game(Game myGame)
             myGame.btn_outils->time =  TTF_RenderText_Blended(myGame.police,time,couleurBlanche);
             myGame.btn_outils->position_time.x = myGame.plateau->position.x+myGame.plateau->surface_plateau->w-TAILLE_CASE;
             myGame.btn_outils->position_time.y = myGame.plateau->position.y-TAILLE_CASE/2;
-            SDL_BlitSurface(myGame.btn_outils->time,NULL,myGame.btn_outils->surface_time,&position_timer);
+            SDL_BlitSurface(myGame.btn_outils->time,NULL,myGame.btn_outils->surface_time,&position_relatif);
             SDL_BlitSurface(myGame.btn_outils->surface_time,NULL,myGame.screen,&myGame.btn_outils->position_time);
 
             temp_precedent = temp_actuel;
@@ -334,7 +363,7 @@ void initialisation_btn_outils()
 
     //collage bouton valider
     myGame.btn_outils->position_valider.x = myGame.plateau->position.x;
-    myGame.btn_outils->position_valider.y = myGame.plateau->position.y+TAILLE_PLATEAU+10;
+    myGame.btn_outils->position_valider.y = myGame.plateau->position.y+TAILLE_PLATEAU+70;
     SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
 
     //surface de score
@@ -352,10 +381,13 @@ void initialisation_btn_outils()
     SDL_BlitSurface(myGame.btn_outils->time,NULL,myGame.btn_outils->surface_time,&position);
     SDL_BlitSurface(myGame.btn_outils->surface_time,NULL,myGame.screen,&myGame.btn_outils->position_time);
 
+
+    //surface mot en cours
+    myGame.btn_outils->surface_mot_courant=SDL_CreateRGBSurface(SDL_HWSURFACE,TAILLE_PLATEAU,35,32,0,0,0,0);
 }
 
 
-void valider_mot()
+boolean valider_mot()
 {
     Uint32 couleur_par_defaut=SDL_MapRGB(myGame.screen->format,47,87,145);
     char mot[16];
@@ -392,9 +424,8 @@ void valider_mot()
 
 
     if(validation_sur_dictionnaire("dict.txt",mot))
-        fprintf(stdout,"%s goood\n",mot);
-    else
-         fprintf(stdout,"%s nooo\n",mot);
+        return true;
+    return false;
 }
 
 char* get_time(int secondes)
@@ -453,6 +484,7 @@ void menu_game()
 
     SDL_BlitSurface(menu_surface,NULL,myGame.screen,&position);
 
+    SDL_EnableUNICODE(1);
 
     //boucle principale
     while(continuer)
@@ -464,10 +496,17 @@ void menu_game()
                 continuer = false;
             break;
 
+            case SDL_KEYDOWN:
+                print_(&event.key);
+            break;
+
             case SDL_MOUSEBUTTONDOWN:
+
+                //clique sur bouton jouer
                 if( (event.button.x >= position.x) && (event.button.x<= position.x+menu_surface->w)
                    && (event.button.y >= position.y) && (event.button.y<= position.y+menu_surface->h)
                    ){
+
                         initialisation_game();
                         play_game(myGame);
                         continuer=false;
@@ -487,5 +526,4 @@ void preparation_joueurs()
 {
     myGame.joueur[0] = initialisation_joueur("aymen");
     myGame.joueur[1] = initialisation_joueur("youssef");
-
 }

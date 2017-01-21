@@ -19,6 +19,7 @@ Plateau *initialiser_plateau()
 
     nvPlat = (Plateau *) malloc(sizeof(Plateau));
 
+    nvPlat->mot_courant[0]='\0';
     nvPlat->taille_mot_courant=0;
     nvPlat->coordonnee_lettre=NULL;
 

@@ -20,9 +20,15 @@
         SDL_Surface *time;
         SDL_Rect position_time;
 
+        //surface du mot courant
+        SDL_Surface *mot_courant;
+        SDL_Surface *surface_mot_courant;
+        SDL_Rect position_mot_courant;
+
     } Btn_outils;
 
     typedef struct {
+
         Btn_outils *btn_outils;
         SDL_Surface *screen;
         TTF_Font *police;
@@ -43,7 +49,7 @@
     SDL_Surface *initialisation_sdl();
     void error(char *msg);
     TTF_Font* initialisation_ttf(char *);
-    void valider_mot();
+    boolean valider_mot();
     char* get_time(int);
     void menu_game();
     void preparation_joueurs();
