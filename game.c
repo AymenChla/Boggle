@@ -38,7 +38,7 @@ SDL_Surface *initialisation_sdl()
     if(screen == NULL)
         error("impossible de charger le mode video");
 
-    SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,45,75,20));
+    SDL_FillRect(screen,NULL,SDL_MapRGB(screen->format,224,224,224));
 
     SDL_WM_SetCaption("boggle",NULL);
 
@@ -115,7 +115,7 @@ void play_game()
 
     //clean interface
     SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,45,75,20));
-    
+
     //collage surface plateau dans l'ecran
     SDL_BlitSurface(myGame.plateau->surface_plateau,NULL,myGame.screen,&myGame.plateau->position);
 
@@ -457,45 +457,127 @@ char* get_time(int secondes)
 
 void menu_game()
 {
-
-    SDL_Surface *play=NULL;
-    SDL_Surface *play_surface=NULL;
+    SDL_Surface*menu=NULL;
+    SDL_Surface *menu_surface=NULL,*Nombre_joueur=NULL;
     SDL_Color couleurBlanche={255,255,255};
+    SDL_Color couleurBoggle={65,105,225};
+    SDL_Color couleur={0,255,255};
     boolean continuer = true;
-    SDL_Rect position;
+    SDL_Rect position,position_jouer,positionArrow;
     SDL_Event event;
+    int i,cpt=1;
 
     //initialisation SDl
     myGame.screen = initialisation_sdl();
-
     //initialisation TTF
+
+    //interface boogle
+    myGame.police = initialisation_ttf("fonts/AGALEGA-Regular.otf",60);
+    menu = TTF_RenderText_Blended(myGame.police,"BOGGLE",couleurBoggle);
+    position.x = 25;
+    position.y = 45;
+    SDL_BlitSurface(menu,NULL,myGame.screen,&position);
+
+
+
+
     myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
-
-
     //initialisation du bouton jouer
-    play = TTF_RenderText_Blended(myGame.police,"Jouer",couleurBlanche);
-    play_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,3*TAILLE_CASE,TAILLE_CASE,32,0,0,0,0);
-    SDL_FillRect(play_surface,NULL,SDL_MapRGB(myGame.screen->format,255,55,255));
+    menu = TTF_RenderText_Blended(myGame.police,"Jouer",couleurBlanche);
+    menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,3*TAILLE_CASE,TAILLE_CASE,32,0,0,0,0);
+    SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,255,165,0));
         //position du text dans play_surface
-    position.x = (play_surface->w-play->w)/2;
-    position.y = (play_surface->h-play->h)/2;
-    SDL_BlitSurface(play,NULL,play_surface,&position);
+    position_jouer.x = (menu_surface->w-menu->w)/2;
+    position_jouer.y = (menu_surface->h-menu->h)/2;
+    SDL_BlitSurface(menu,NULL,menu_surface,&position_jouer);
         //position du play dans screen
-    position.x = (myGame.screen->w-play_surface->w)/2;
-    position.y = (myGame.screen->h-play_surface->h)/2;
-    SDL_BlitSurface(play_surface,NULL,myGame.screen,&position);
+    position_jouer.x = (myGame.screen->w-menu_surface->w)/2;
+    position_jouer.y = (myGame.screen->h-menu_surface->h)/2;
+    SDL_BlitSurface(menu_surface,NULL,myGame.screen,&position_jouer);
 
-    //creation du text play 1_jouer 2_joueur
-   /* text_joueur = TTF_RenderText_Blended(myGame.police,"1-one player",couleurBlanche);
-    position.x = 100;
-    position.y = 100;
-    SDL_BlitSurface(text_joueur,NULL,myGame.screen,&position);
-    SDL_FreeSurface(text_joueur);
-    text_joueur = TTF_RenderText_Blended(myGame.police,"2-two player",couleurBlanche);
-    position.x = 100;
-    position.y = 150;
-    SDL_BlitSurface(text_joueur,NULL,myGame.screen,&position);
-    SDL_FreeSurface(text_joueur);*/
+
+    menu = TTF_RenderText_Blended(myGame.police,"Players :",couleurBoggle);
+    position.x=30;
+    position.y=385;
+    SDL_BlitSurface(menu,NULL,myGame.screen,&position);
+
+
+    menu = TTF_RenderText_Blended(myGame.police,"Time :",couleurBoggle);
+    position.x=30;
+    position.y=385+TAILLE_CASE;
+    SDL_BlitSurface(menu,NULL,myGame.screen,&position);
+
+
+
+    menu= SDL_LoadBMP("img/groups.bmp");
+    SDL_SetColorKey(menu, SDL_SRCCOLORKEY, SDL_MapRGB(menu->format, 255, 255, 255));
+    position.x=TAILLE_CASE*3-30;
+    position.y=TAILLE_PLATEAU+TAILLE_CASE;
+    SDL_BlitSurface(menu, NULL, myGame.screen,&position);
+
+    Nombre_joueur = TTF_RenderText_Blended(myGame.police,"1",couleur);
+    position.x=TAILLE_CASE*3+50;
+    position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+    SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+    myGame.nbr_joueur=1;
+
+
+
+
+
+    menu = SDL_LoadBMP("img/time.bmp");
+    SDL_SetColorKey(menu, SDL_SRCCOLORKEY, SDL_MapRGB(menu->format, 255, 255, 255));
+    position.x=TAILLE_CASE*3-35;
+    position.y=TAILLE_PLATEAU+2*TAILLE_CASE;
+    SDL_BlitSurface(menu, NULL, myGame.screen,&position);
+
+    menu = TTF_RenderText_Blended(myGame.police,"1:00",couleur);
+    position.x=TAILLE_CASE*3+20;
+    position.y=TAILLE_PLATEAU+2*TAILLE_CASE+10;
+    SDL_BlitSurface(menu,NULL,myGame.screen,&position);
+    myGame.nbr_seconde=60;
+
+
+
+    positionArrow.x=TAILLE_CASE*2;
+    positionArrow.y=TAILLE_PLATEAU+TAILLE_CASE;
+
+    for(i=0;i<2;i++){
+     menu = SDL_LoadBMP("img/left.bmp");
+     SDL_SetColorKey(menu, SDL_SRCCOLORKEY, SDL_MapRGB(menu->format, 0, 0, 0));
+     menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,TAILLE_CASE-35,TAILLE_CASE-35,32,0,0,0,0);
+     SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+     position.x = (menu_surface->w-menu->w)/2;
+     position.y = (menu_surface->h-menu->h)/2;
+     SDL_BlitSurface(menu,NULL,menu_surface,&position);
+    /* On blitte par-dessus l'écran */
+     SDL_BlitSurface(menu_surface, NULL, myGame.screen,&positionArrow);
+     positionArrow.y+=TAILLE_CASE;
+
+    }
+
+
+    positionArrow.x=TAILLE_CASE*4;
+    positionArrow.y=TAILLE_PLATEAU+TAILLE_CASE;
+
+    for(i=0;i<2;i++){
+     menu = SDL_LoadBMP("img/right.bmp");
+     SDL_SetColorKey(menu, SDL_SRCCOLORKEY, SDL_MapRGB(menu->format, 0, 0, 0));
+     menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,TAILLE_CASE-35,TAILLE_CASE-35,32,0,0,0,0);
+     SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+     position.x = (menu_surface->w-menu->w)/2;
+     position.y = (menu_surface->h-menu->h)/2;
+     SDL_BlitSurface(menu,NULL,menu_surface,&position);
+     SDL_BlitSurface(menu_surface, NULL, myGame.screen,&positionArrow);
+     positionArrow.y+=TAILLE_CASE;
+
+    }
+
+
+    positionArrow.x=TAILLE_CASE*2;
+    positionArrow.y=TAILLE_PLATEAU+TAILLE_CASE;
+
+
 
     SDL_EnableUNICODE(1);
 
@@ -529,8 +611,8 @@ void menu_game()
             case SDL_MOUSEBUTTONDOWN:
 
                 //clique sur bouton jouer
-                if( (event.button.x >= position.x) && (event.button.x<= position.x+play_surface->w)
-                   && (event.button.y >= position.y) && (event.button.y<= position.y+play_surface->h)
+                if( (event.button.x >= position_jouer.x) && (event.button.x<= position_jouer.x+3*TAILLE_CASE)
+                   && (event.button.y >= position_jouer.y) && (event.button.y<= position_jouer.y+TAILLE_CASE)
                    ){
 
                         initialisation_game();
@@ -541,6 +623,87 @@ void menu_game()
 
                         continuer=false;
                    }
+
+                   if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
+                   ){
+                        menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,20,20,32,0,0,0,0);
+                        SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(menu_surface, NULL, myGame.screen,&position);
+
+                        Nombre_joueur= TTF_RenderText_Blended(myGame.police,"1",couleur);
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+                        myGame.nbr_joueur=1;
+
+                   }
+
+                   if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
+                   ){
+                        menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,20,20,32,0,0,0,0);
+                        SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(menu_surface, NULL, myGame.screen,&position);
+
+                        Nombre_joueur= TTF_RenderText_Blended(myGame.police,"2",couleur);
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+                        myGame.nbr_joueur=2;
+                   }
+                    if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
+                   ){
+
+                       if(cpt>1) cpt--;
+
+                    }
+                      if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
+                   ){
+                       if(cpt<5) cpt++;
+                   }
+
+
+
+                     switch (cpt)
+                       {
+                        case 1:
+                            Nombre_joueur= TTF_RenderText_Blended(myGame.police,"1:00",couleur);
+                            myGame.nbr_seconde=60;
+                            break;
+
+                        case 2:
+                            Nombre_joueur= TTF_RenderText_Blended(myGame.police,"2:00",couleur);
+
+                            break;
+                        case 3:
+                            Nombre_joueur= TTF_RenderText_Blended(myGame.police,"3:00",couleur);
+
+                            break;
+                        case 4:
+                            Nombre_joueur= TTF_RenderText_Blended(myGame.police,"4:00",couleur);
+                            break;
+                        case 5:
+                            Nombre_joueur= TTF_RenderText_Blended(myGame.police,"5:00",couleur);
+                            break;
+                       }
+
+                        menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,60,60,32,0,0,0,0);
+                        SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+                        position.x=TAILLE_CASE*3+20;
+                        position.y=TAILLE_PLATEAU+2*TAILLE_CASE+10;
+                        SDL_BlitSurface(menu_surface, NULL, myGame.screen,&position);
+                        position.x=TAILLE_CASE*3+20;
+                        position.y=TAILLE_PLATEAU+2*TAILLE_CASE+10;
+                        SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+                         myGame.nbr_seconde=60*cpt;
+
             break;
 
             default:

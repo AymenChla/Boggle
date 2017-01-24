@@ -34,6 +34,9 @@
         TTF_Font *police;
         Plateau *plateau;
         Joueur *joueur[2];
+        int nbr_joueur;
+        int nbr_seconde;
+
     } Game;
 
     Game myGame;

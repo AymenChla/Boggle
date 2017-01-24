@@ -15,7 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="C:/Program Files/CodeBlocks/MinGW/lib/SDL_ttf.dll" />
+					<Add library="C:/Program Files/CodeBlocks/SDL-1.2.15/lib/SDL_ttf.lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
