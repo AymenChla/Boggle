@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1483508502 source:c:\users\acer\desktop\boggle\game.c
+1485228615 source:c:\users\acer\desktop\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -204,39 +204,42 @@
 	"begin_code.h"
 	"close_code.h"
 
-1483505817 c:\users\acer\desktop\boggle\game.h
+1485226151 c:\users\acer\desktop\boggle\game.h
 	<SDL_ttf.h>
 	"plateau.h"
 	"joueur.h"
 
-1483486904 c:\users\acer\desktop\boggle\plateau.h
+1485191811 c:\users\acer\desktop\boggle\plateau.h
 	<SDL.h>
 	"generale.h"
 	"pile.h"
 
-1482980485 c:\users\acer\desktop\boggle\generale.h
+1485191811 c:\users\acer\desktop\boggle\generale.h
 
-1483486855 c:\users\acer\desktop\boggle\pile.h
+1485191811 c:\users\acer\desktop\boggle\pile.h
 	"generale.h"
 
-1481695915 c:\users\acer\desktop\boggle\joueur.h
+1485226139 c:\users\acer\desktop\boggle\joueur.h
 	"score.h"
 
-1481695930 c:\users\acer\desktop\boggle\score.h
+1485191811 c:\users\acer\desktop\boggle\score.h
 	"generale.h"
 
-1481695780 source:c:\users\acer\desktop\boggle\joueur.c
+1485228538 source:c:\users\acer\desktop\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"joueur.h"
+	<SDL.h>
+	<SDL_ttf.h>
+	"game.h"
 
-1483487003 source:c:\users\acer\desktop\boggle\pile.c
+1485191811 source:c:\users\acer\desktop\boggle\pile.c
 	<stdio.h>
 	<stdlib.h>
 	"pile.h"
 
-1483486922 source:c:\users\acer\desktop\boggle\plateau.c
+1485223865 source:c:\users\acer\desktop\boggle\plateau.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -245,13 +248,13 @@
 	"generale.h"
 	"game.h"
 
-1481695795 source:c:\users\acer\desktop\boggle\score.c
+1485191811 source:c:\users\acer\desktop\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"score.h"
 
-1483508085 source:c:\users\acer\desktop\boggle\main.c
+1485222321 source:c:\users\acer\desktop\boggle\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -319,4 +322,15 @@
 	<SDL_ttf.h>
 	"game.h"
 	"pile.h"
+
+1485214103 c:\users\acer\desktop\boggle\btn_outils.h
+	<SDL_ttf.h>
+	<SDL.h>
+	"generale.h"
+	"game.h"
+
+1485191811 source:c:\users\acer\desktop\boggle\btn_outils.c
+	<stdio.h>
+	<stdlib.h>
+	"btn_outils.h"
 

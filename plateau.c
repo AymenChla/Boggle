@@ -93,6 +93,9 @@ Plateau *initialiser_plateau()
         position.y += TAILLE_CASE+DECALAGE;
     }
 
+    //initialisation position plateau
+    nvPlat->position.x=(myGame.screen->w-nvPlat->surface_plateau->w)/2;
+    nvPlat->position.y=TAILLE_CASE;
 
     return nvPlat;
 }

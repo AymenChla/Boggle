@@ -38,21 +38,22 @@
 
     Game myGame;
 
-    void initialisation_btn_outils();
+    Btn_outils* initialisation_btn_outils();
     boolean is_last_click(int,int);
     boolean can_be_hovered(int,int);
     void initialisation_game();
     void saisir_mot(char*);
     boolean validation_sur_dictionnaire(char *nom_fichier,char *mot);
-    void play_game(Game);
-    void end_game(Game);
+    void play_game();
+    void end_game();
     SDL_Surface *initialisation_sdl();
     void error(char *msg);
-    TTF_Font* initialisation_ttf(char *);
+    TTF_Font* initialisation_ttf(char *fichier,int size);
     boolean valider_mot();
     char* get_time(int);
     void menu_game();
     void preparation_joueurs();
-
+    void menu_joueur();
+    char* get_input(SDL_KeyboardEvent *key);
 
 #endif // GAME_H

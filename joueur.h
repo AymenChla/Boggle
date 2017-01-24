@@ -11,6 +11,6 @@
 
 
     void liberation_joueur(Joueur*);
-    Joueur* initialisation_joueur(char *nom);
+    Joueur* initialisation_joueur();
 
 #endif // JOUEUR_H
