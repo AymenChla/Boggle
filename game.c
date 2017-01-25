@@ -33,7 +33,7 @@ SDL_Surface *initialisation_sdl()
     SDL_Surface *screen = NULL;
     if(SDL_Init(SDL_INIT_VIDEO |SDL_INIT_AUDIO) == -1)
         error("impossible d'initialiser la sdl");
-
+    SDL_WM_SetIcon(SDL_LoadBMP("img/logo.bmp"), NULL);
     screen = SDL_SetVideoMode(WIDTH_SCREEN,HEIGHT_SCREEN,32,SDL_HWSURFACE | SDL_DOUBLEBUF);
     if(screen == NULL)
         error("impossible de charger le mode video");
@@ -103,12 +103,13 @@ void play_game()
     SDL_Color couleurBlanche = {255,255,255};
     SDL_Rect position;
     int temp_actuel=0,temp_precedent=0;
-    int secondes=1000*60*3;
+    int secondes;
     char time[6];
     SDL_Rect position_relatif;
     position_relatif.x=0;
     position_relatif.y=0;
 
+    secondes=myGame.nbr_seconde*1000;
     //position du caractere a l'interieur de son surface pour etre centré
     position.x = (myGame.plateau->cases[i][j].surface_case->w-myGame.plateau->cases[i][j].caractere->w)/2;
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
@@ -303,7 +304,6 @@ void initialisation_game()
 {
     //initialisation Plateau
     myGame.plateau = initialiser_plateau();
-
      //initialisation btn_outils
     myGame.btn_outils= initialisation_btn_outils();
 
@@ -614,9 +614,7 @@ void menu_game()
                 if( (event.button.x >= position_jouer.x) && (event.button.x<= position_jouer.x+3*TAILLE_CASE)
                    && (event.button.y >= position_jouer.y) && (event.button.y<= position_jouer.y+TAILLE_CASE)
                    ){
-
                         initialisation_game();
-
                         initialisation_joueur();
 
                         play_game();
@@ -661,12 +659,16 @@ void menu_game()
                    ){
 
                        if(cpt>1) cpt--;
+                        myGame.nbr_seconde=60*cpt;
+
 
                     }
                       if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
                    ){
                        if(cpt<5) cpt++;
+                        myGame.nbr_seconde=60*cpt;
+
                    }
 
 
@@ -702,7 +704,6 @@ void menu_game()
                         position.x=TAILLE_CASE*3+20;
                         position.y=TAILLE_PLATEAU+2*TAILLE_CASE+10;
                         SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
-                         myGame.nbr_seconde=60*cpt;
 
             break;
 
@@ -715,6 +716,17 @@ void menu_game()
 
     SDL_Quit();
 }
+
+
+
+
+
+
+
+
+
+
+
 
 void preparation_joueurs()
 {

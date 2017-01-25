@@ -334,7 +334,7 @@
 	<stdlib.h>
 	"btn_outils.h"
 
-1485293630 source:c:\users\youssef\desktop\boggle\game.c
+1485360275 source:c:\users\youssef\desktop\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -344,7 +344,7 @@
 	"game.h"
 	"pile.h"
 
-1485293563 c:\users\youssef\desktop\boggle\game.h
+1485360298 c:\users\youssef\desktop\boggle\game.h
 	<SDL_ttf.h>
 	"plateau.h"
 	"joueur.h"
@@ -365,7 +365,7 @@
 1485230542 c:\users\youssef\desktop\boggle\score.h
 	"generale.h"
 
-1485230542 source:c:\users\youssef\desktop\boggle\joueur.c
+1485358167 source:c:\users\youssef\desktop\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -394,7 +394,7 @@
 	"generale.h"
 	"game.h"
 
-1485254829 source:c:\users\youssef\desktop\boggle\score.c
+1485359166 source:c:\users\youssef\desktop\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
