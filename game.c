@@ -33,7 +33,7 @@ SDL_Surface *initialisation_sdl()
     SDL_Surface *screen = NULL;
     if(SDL_Init(SDL_INIT_VIDEO |SDL_INIT_AUDIO) == -1)
         error("impossible d'initialiser la sdl");
-
+    SDL_WM_SetIcon(SDL_LoadBMP("img/logo.bmp"), NULL);
     screen = SDL_SetVideoMode(WIDTH_SCREEN,HEIGHT_SCREEN,32,SDL_HWSURFACE | SDL_DOUBLEBUF);
     if(screen == NULL)
         error("impossible de charger le mode video");
@@ -102,13 +102,16 @@ void play_game(int num_joueur)
     SDL_Color couleur_valider_hover={45,78,102};
     SDL_Color couleurBlanche = {255,255,255};
     SDL_Rect position;
+
     int temp_actuel=0,temp_precedent=0,temp_debut_game=SDL_GetTicks();
     int m_secondes=1000*myGame.nbr_seconde;
+
     char time[6];
     SDL_Rect position_relatif;
     position_relatif.x=0;
     position_relatif.y=0;
 
+    
     //position du caractere a l'interieur de son surface pour etre centré
     position.x = (myGame.plateau->cases[i][j].surface_case->w-myGame.plateau->cases[i][j].caractere->w)/2;
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
@@ -321,7 +324,6 @@ void initialisation_game()
 {
     //initialisation Plateau
     myGame.plateau = initialiser_plateau();
-
      //initialisation btn_outils
     myGame.btn_outils= initialisation_btn_outils();
 
@@ -498,9 +500,6 @@ void menu_game()
     position.y = 45;
     SDL_BlitSurface(menu,NULL,myGame.screen,&position);
 
-
-
-
     myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
     //initialisation du bouton jouer
     menu = TTF_RenderText_Blended(myGame.police,"Jouer",couleurBlanche);
@@ -634,8 +633,8 @@ void menu_game()
                 if( (event.button.x >= position_jouer.x) && (event.button.x<= position_jouer.x+3*TAILLE_CASE)
                    && (event.button.y >= position_jouer.y) && (event.button.y<= position_jouer.y+TAILLE_CASE)
                    ){
-
                         initialisation_game();
+
                         myGame.joueur = Malloc(myGame.nbr_joueur,Joueur*);
                         for(i=0 ; i < myGame.nbr_joueur ; i++)
                             myGame.joueur[i] = Malloc(1,Joueur);
@@ -646,6 +645,53 @@ void menu_game()
                         afficher_score(myGame.joueur[0]->score);
                         continuer=false;
                    }
+
+                   if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
+                   ){
+                        menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,20,20,32,0,0,0,0);
+                        SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(menu_surface, NULL, myGame.screen,&position);
+
+                        Nombre_joueur= TTF_RenderText_Blended(myGame.police,"1",couleur);
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+                        myGame.nbr_joueur=1;
+
+
+                   }
+
+                   if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
+                   ){
+                        menu_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,20,20,32,0,0,0,0);
+                        SDL_FillRect(menu_surface,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(menu_surface, NULL, myGame.screen,&position);
+
+                        Nombre_joueur= TTF_RenderText_Blended(myGame.police,"2",couleur);
+                        position.x=TAILLE_CASE*3+50;
+                        position.y=TAILLE_PLATEAU+TAILLE_CASE+10;
+                        SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+                        myGame.nbr_joueur=2;
+                   }
+                    if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
+                   ){
+
+                       if(cpt>1) cpt--;
+
+                    }
+                      if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
+                   && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
+                   ){
+                       if(cpt<5) cpt++;
+                   }
+
 
                    if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
@@ -684,13 +730,18 @@ void menu_game()
                    ){
 
                        if(cpt>1) cpt--;
+                        myGame.nbr_seconde=60*cpt;
+
 
                     }
                       if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
                    ){
                        if(cpt<5) cpt++;
+                        myGame.nbr_seconde=60*cpt;
+
                    }
+
 
 
 
@@ -725,7 +776,9 @@ void menu_game()
                         position.x=TAILLE_CASE*3+20;
                         position.y=TAILLE_PLATEAU+2*TAILLE_CASE+10;
                         SDL_BlitSurface(Nombre_joueur,NULL,myGame.screen,&position);
+
                          myGame.nbr_seconde=60*cpt;
+
 
             break;
 
@@ -738,6 +791,17 @@ void menu_game()
 
     SDL_Quit();
 }
+
+
+
+
+
+
+
+
+
+
+
 
 void preparation_joueurs()
 {

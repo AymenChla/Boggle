@@ -34,6 +34,7 @@
         SDL_Surface *screen;
         TTF_Font *police;
         Plateau *plateau;
+
         Joueur **joueur;
         int nbr_joueur;
         int nbr_seconde;

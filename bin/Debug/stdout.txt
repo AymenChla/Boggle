@@ -1,4 +1,3 @@
-as
-score: 2
-MORE	1
-RAS	1
+aymenchla
+score: 1
+PAN	1

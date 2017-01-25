@@ -63,11 +63,10 @@ Mot *creer_mot(char *mot)
 Score* initialisation_score()
 {
     Score *score = Malloc(1,Score);
-
     score->nb_points = 0;
     score->teteMots = NULL;
-
     return score;
+
 }
 
 
