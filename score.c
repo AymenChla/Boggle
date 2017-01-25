@@ -11,10 +11,10 @@ void afficher_score(Score* score)
     cour = score->teteMots;
 
 
-    printf("score: %d\n",score->nb_points);
+    fprintf(stdout,"score: %d\n",score->nb_points);
     while(cour != NULL)
     {
-        printf("%s\t%d\n",cour->info->mot,cour->info->points);
+        fprintf(stdout,"%s\t%d\n",cour->info->mot,cour->info->points);
         cour = cour->suivant;
     }
 }
@@ -76,19 +76,13 @@ void inserer_mot(Score *score,char *mot)
 
     if(rechercher_mot(score,mot) == false)
     {
-       Mot *nvMot = creer_mot(mot);
+        Mot *nvMot = creer_mot(mot);
 
         score->nb_points += nvMot->info->points;
 
-        if(score->teteMots != NULL){
+        nvMot->suivant = score->teteMots;
+        score->teteMots = nvMot;
 
-            nvMot->suivant = score->teteMots;
-            score->teteMots = nvMot;
-
-        }else{
-
-            score->teteMots = nvMot;
-        }
     }
 
 }

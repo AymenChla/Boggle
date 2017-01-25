@@ -13,11 +13,10 @@
         struct Mot *suivant;
     } Mot;
 
-    typedef Mot* ListeMots;
-
     typedef struct{
         int nb_points;
-        ListeMots teteMots;
+        //tete de la liste chainée
+        Mot *teteMots;
     } Score;
 
 

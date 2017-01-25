@@ -13,7 +13,8 @@
         SDL_Surface *valider;
         SDL_Rect position_valider;
 
-        SDL_Surface *score;
+        SDL_Surface *score_surface;
+        SDL_Surface *score_text;
         SDL_Rect position_score;
 
         SDL_Surface *surface_time;
@@ -33,7 +34,7 @@
         SDL_Surface *screen;
         TTF_Font *police;
         Plateau *plateau;
-        Joueur *joueur[2];
+        Joueur **joueur;
         int nbr_joueur;
         int nbr_seconde;
 
@@ -47,7 +48,7 @@
     void initialisation_game();
     void saisir_mot(char*);
     boolean validation_sur_dictionnaire(char *nom_fichier,char *mot);
-    void play_game();
+    void play_game(int num_joueur);
     void end_game();
     SDL_Surface *initialisation_sdl();
     void error(char *msg);
