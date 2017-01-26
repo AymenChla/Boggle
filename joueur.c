@@ -28,7 +28,7 @@ Joueur* initialisation_joueur()
     SDL_Rect position_play;
     SDL_Rect position_temp;
     SDL_Color couleurNoire = {0,0,0};
-    SDL_Color couleurBlanche = {255,255,255};
+    SDL_Color couleurBlanche = {255, 255, 255};
     SDL_Color couleurBleu = {65,105,225};
     int max_taille_input=10;
     int taille_input_courant=0;
@@ -36,30 +36,59 @@ Joueur* initialisation_joueur()
     char header_mot[20];
     char nbr_joueur[4];
 
-
-    SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
-    image_background=SDL_LoadBMP("img/background.bmp");
+    //1 background
+    image_background = SDL_LoadBMP("img/background_joueur1.bmp");
     position.x=0;
     position.y=0;
-    SDL_SetAlpha(image_background, SDL_SRCALPHA, 190);
+    SDL_BlitSurface(image_background, NULL, myGame.screen,&position);
+    //1 background avec setAlpha
+    image_background=SDL_LoadBMP("img/background_joueur2.bmp");
+    position.x=0;
+    position.y=0;
+    SDL_SetAlpha(image_background, SDL_SRCALPHA, 200);
     SDL_BlitSurface(image_background, NULL, myGame.screen,&position);
 
 
-    sprintf(nbr_joueur,"%d",myGame.nbr_joueur);
-    strcpy(header_mot,"Nombre joueur :");
-    strcat(header_mot,nbr_joueur);
-    strcat(header_mot,"  time :");
-    strcat(header_mot,get_time(myGame.nbr_seconde*1000));
-    header = TTF_RenderText_Blended(myGame.police,header_mot,couleurNoire);
+
+    myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",15);
     header_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,WIDTH_SCREEN,50,32,0,0,0,0);
-    SDL_FillRect(header_surface,NULL,SDL_MapRGB(myGame.screen->format,240,240,240));
+    SDL_SetAlpha(header_surface, SDL_SRCALPHA, 180);
+    SDL_FillRect(header_surface,NULL,SDL_MapRGB(myGame.screen->format, 255, 255, 255));
+    //concatenation de header
+    sprintf(nbr_joueur,"%d",myGame.nbr_joueur);
+    strcpy(header_mot,"      Nombre players ");
+    strcat(header_mot,nbr_joueur);
+    strcat(header_mot,"      time ");
+    strcat(header_mot,get_time(myGame.nbr_seconde*1000));
+    strcat(header_mot,"  4x4");
+
+    header = TTF_RenderText_Blended(myGame.police,header_mot,couleurBlanche);
     position.x=15;
-    position.y=5;
+    position.y=12;
     SDL_BlitSurface(header,NULL,header_surface,&position);
+
     position.x=0;
-    position.y=HEIGHT_SCREEN-50;
+    position.y=0;
     SDL_BlitSurface(header_surface,NULL,myGame.screen,&position);
 
+    //icone header 
+    header_surface = SDL_LoadBMP("img/user.bmp");
+    SDL_SetColorKey(header_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
+    position.x=0;
+    position.y=4;
+    SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
+
+    header_surface = SDL_LoadBMP("img/time_user.bmp");
+    SDL_SetColorKey(header_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
+    position.x=175;
+    position.y=8;
+    SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
+
+     header_surface = SDL_LoadBMP("img/carre.bmp");
+    SDL_SetColorKey(header_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
+    position.x=WIDTH_SCREEN-45;
+    position.y=0;
+    SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
 
 
 
@@ -70,28 +99,27 @@ Joueur* initialisation_joueur()
     //initialisation input box
     input_box = SDL_CreateRGBSurface(SDL_HWSURFACE,200,30,32,0,0,0,0);
     position_input_box.x = 100;
-    position_input_box.y = 180;
+    position_input_box.y = 240;
     position_relatif.x = 0;
     position_relatif.y = 0;
-
+    myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
     //initialisation message nom joueur
     nom_text = TTF_RenderText_Blended(myGame.police,"  Name of player : ",couleurBlanche);
     position_nom_text.x = 0;
-    position_nom_text.y = 150;
+    position_nom_text.y = 210;
 
-    if(myGame.nbr_joueur==2){
-        strcpy(nbr_joueur,"START 1");
-    }else{
-        strcpy(nbr_joueur,"START");
+    
 
-    }
+    
 
 
-    //initialisation du bouton jouer
-    play = TTF_RenderText_Blended(myGame.police,nbr_joueur,couleurBleu);
+    //initialisation du bouton start
+    strcpy(nbr_joueur,"START");
+   
+    play = TTF_RenderText_Blended(myGame.police,nbr_joueur,couleurBlanche);
 
-    play_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,2*TAILLE_CASE,TAILLE_CASE-30,32,0,0,0,0);
-    SDL_FillRect(play_surface,NULL,SDL_MapRGB(myGame.screen->format,255, 255, 255));
+    play_surface=SDL_LoadBMP("img/play_blanche.bmp");
+    SDL_SetColorKey(play_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
 
 
 
@@ -103,7 +131,7 @@ Joueur* initialisation_joueur()
     SDL_BlitSurface(play,NULL,play_surface,&position_temp);
         //position du play dans screen
     position_temp.x = (myGame.screen->w-play_surface->w)/2;
-    position_temp.y = (myGame.screen->h-play_surface->h)/2;
+    position_temp.y = (myGame.screen->h-play_surface->h)/2+80;
     SDL_BlitSurface(play_surface,NULL,myGame.screen,&position_temp);
 	SDL_FillRect(input_box,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
     SDL_BlitSurface(nom_text,NULL,myGame.screen,&position_nom_text);

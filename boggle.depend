@@ -260,7 +260,7 @@
 	"game.h"
 	"pile.h"
 
-1485390900 source:c:\users\youssef\desktop\boggle\game.c
+1485449372 source:c:\users\youssef\desktop\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -291,7 +291,7 @@
 1485369339 c:\users\youssef\desktop\boggle\score.h
 	"generale.h"
 
-1485358167 source:c:\users\youssef\desktop\boggle\joueur.c
+1485437398 source:c:\users\youssef\desktop\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

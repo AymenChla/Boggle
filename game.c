@@ -1,9 +1,7 @@
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -103,6 +101,7 @@ void play_game(int num_joueur)
     SDL_Color couleur_valider_hover={45,78,102};
     SDL_Color couleurBlanche = {255,255,255};
     SDL_Rect position;
+    SDL_Surface  *image_background;
 
     int temp_actuel=0,temp_precedent=0,temp_debut_game=SDL_GetTicks();
     int m_secondes=1000*myGame.nbr_seconde;
@@ -118,7 +117,13 @@ void play_game(int num_joueur)
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
 
     //clean interface
-    SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,45,75,20));
+    SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
+    image_background = SDL_LoadBMP("img/background_joueur1.bmp");
+    position.x=0;
+    position.y=0;
+    SDL_SetAlpha(image_background, SDL_SRCALPHA, 170);
+    SDL_BlitSurface(image_background, NULL, myGame.screen,&position);
+
 
     //collage surface plateau dans l'ecran
     SDL_BlitSurface(myGame.plateau->surface_plateau,NULL,myGame.screen,&myGame.plateau->position);
@@ -478,6 +483,8 @@ char* get_time(int m_secondes)
     return time;
 }
 
+
+//fonction menu 
 void menu_game()
 {
     SDL_Surface *menu=NULL,*surface_Nombre_joueur = NULL,*surface_Nombre_time = NULL;
@@ -586,9 +593,9 @@ void menu_game()
     position.y=290+TAILLE_CASE-10;
     SDL_BlitSurface(menu, NULL, myGame.screen,&position);
 
-    
-    
-   
+
+
+
 
     surface_Nombre_time=SDL_LoadBMP("img/surface_time.bmp");
     Nombre_time= TTF_RenderText_Blended(myGame.police,"1:00",couleur);
@@ -677,12 +684,14 @@ void menu_game()
                    ){
                         initialisation_game();
 
+                        //allocation nombre de joueur soit 1 seul joueur ou 2 joueur
                         myGame.joueur = Malloc(myGame.nbr_joueur,Joueur*);
                         for(i=0 ; i < myGame.nbr_joueur ; i++)
                             myGame.joueur[i] = Malloc(1,Joueur);
-
+                        //initialisation de joueur returne le nom de joueur
                         myGame.joueur[0]=initialisation_joueur();
                         fprintf(stdout,"%s\n",myGame.joueur[0]->nom);
+
                         play_game(0);
                         afficher_score(myGame.joueur[0]->score);
                         continuer=false;
@@ -730,7 +739,7 @@ void menu_game()
                     if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
                    ){
-                        SDL_FreeSurface(Nombre_time);    
+                        SDL_FreeSurface(Nombre_time);
 
                        if(cpt>1) cpt--;
                         myGame.nbr_seconde=60*cpt;
@@ -740,7 +749,7 @@ void menu_game()
                       if( (event.button.x >= positionArrow.x+2*TAILLE_CASE) && (event.button.x<= positionArrow.x+3*TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y+TAILLE_CASE) && (event.button.y<= positionArrow.y+2*TAILLE_CASE-35)
                    ){
-                        SDL_FreeSurface(Nombre_time);    
+                        SDL_FreeSurface(Nombre_time);
                        if(cpt<5) cpt++;
                         myGame.nbr_seconde=60*cpt;
 
