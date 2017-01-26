@@ -87,7 +87,6 @@ Plateau *initialiser_plateau()
             nvPlat->cases[i][j].position.x = position.x;
             nvPlat->cases[i][j].position.y = position.y;
             SDL_BlitSurface(nvPlat->cases[i][j].surface_case,NULL,nvPlat->surface_plateau,&position);
-
             position.x += TAILLE_CASE+DECALAGE;
         }
         position.y += TAILLE_CASE+DECALAGE;

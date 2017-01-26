@@ -39,6 +39,9 @@
         int nbr_joueur;
         int nbr_seconde;
 
+        //pour quitter le jeu si on est dans une fenetre intermediare
+        boolean quitter;
+
     } Game;
 
     Game myGame;

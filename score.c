@@ -66,7 +66,6 @@ Score* initialisation_score()
     score->nb_points = 0;
     score->teteMots = NULL;
     return score;
-
 }
 
 
