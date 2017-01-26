@@ -1,3 +1,2 @@
-aymenchla
-score: 1
-PAN	1
+
+score: 0
