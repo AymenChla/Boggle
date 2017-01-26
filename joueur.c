@@ -19,7 +19,7 @@ Joueur* initialisation_joueur()
     Joueur *nvJoueur = NULL;
     boolean continuer = true;
     SDL_Event event;
-    SDL_Surface *input_text,* nom_text;
+    SDL_Surface *input_text,*nom_text;
     SDL_Surface *input_box;
    	SDL_Surface *play=NULL;
    	SDL_Surface *play_surface=NULL;
@@ -43,7 +43,7 @@ Joueur* initialisation_joueur()
     position.y=0;
     SDL_SetAlpha(image_background, SDL_SRCALPHA, 190);
     SDL_BlitSurface(image_background, NULL, myGame.screen,&position);
-
+    SDL_FreeSurface(image_background);
 
     sprintf(nbr_joueur,"%d",myGame.nbr_joueur);
     strcpy(header_mot,"Nombre joueur :");
@@ -56,10 +56,11 @@ Joueur* initialisation_joueur()
     position.x=15;
     position.y=5;
     SDL_BlitSurface(header,NULL,header_surface,&position);
+    SDL_FreeSurface(header);
     position.x=0;
     position.y=HEIGHT_SCREEN-50;
     SDL_BlitSurface(header_surface,NULL,myGame.screen,&position);
-
+    SDL_FreeSurface(header_surface);
 
 
 
@@ -101,12 +102,15 @@ Joueur* initialisation_joueur()
     position_temp.x = (play_surface->w-play->w)/2;
     position_temp.y = (play_surface->h-play->h)/2;
     SDL_BlitSurface(play,NULL,play_surface,&position_temp);
+    SDL_FreeSurface(play);
         //position du play dans screen
     position_temp.x = (myGame.screen->w-play_surface->w)/2;
     position_temp.y = (myGame.screen->h-play_surface->h)/2;
     SDL_BlitSurface(play_surface,NULL,myGame.screen,&position_temp);
+    SDL_FreeSurface(play_surface);
 	SDL_FillRect(input_box,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
     SDL_BlitSurface(nom_text,NULL,myGame.screen,&position_nom_text);
+    SDL_FreeSurface(nom_text);
     SDL_BlitSurface(input_box,NULL,myGame.screen,&position_input_box);
     SDL_Flip(myGame.screen);
 
@@ -129,6 +133,7 @@ Joueur* initialisation_joueur()
 	                input_text = TTF_RenderText_Blended(myGame.police,nvJoueur->nom,couleurNoire);
 	                SDL_FillRect(input_box,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
 	                SDL_BlitSurface(input_text,NULL,input_box,&position_relatif);
+                    SDL_FreeSurface(input_text);
 	                SDL_BlitSurface(input_box,NULL,myGame.screen,&position_input_box);
 
 	                taille_input_courant++;
@@ -139,6 +144,7 @@ Joueur* initialisation_joueur()
                     input_text = TTF_RenderText_Blended(myGame.police,nvJoueur->nom,couleurNoire);
 	                SDL_FillRect(input_box,NULL,SDL_MapRGB(myGame.screen->format,224,224,224));
 	                SDL_BlitSurface(input_text,NULL,input_box,&position_relatif);
+                    SDL_FreeSurface(input_text);
 	                SDL_BlitSurface(input_box,NULL,myGame.screen,&position_input_box);
                 }
 
@@ -161,6 +167,7 @@ Joueur* initialisation_joueur()
         SDL_Delay(1);
         SDL_Flip(myGame.screen);
     }
-
+    //liberation
+    SDL_FreeSurface(input_box);
     return nvJoueur;
 }
