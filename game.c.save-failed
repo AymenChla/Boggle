@@ -289,7 +289,7 @@ void play_game(int num_joueur)
                            SDL_FreeSurface(myGame.btn_outils->valider);
 
                             //si le mot existe
-                            if(valider_mot() && strlen(myGame.plateau->mot_courant)>2)
+                            if(valider_mot())
                             {
 
                                 inserer_mot(myGame.joueur[num_joueur]->score,myGame.plateau->mot_courant);
@@ -472,8 +472,8 @@ boolean valider_mot()
 
 char* get_time(int m_secondes)
 {
-    char time[5];
-    char min_c[2];
+    char time[6];
+    char min_c[3];
     char sec_c[3];
     int min=0,sec=0;
     m_secondes/=1000;
@@ -483,24 +483,18 @@ char* get_time(int m_secondes)
     sprintf(min_c,"%d",min);
     sprintf(sec_c,"%d",sec);
 
-    time[0]='\0';
+    time[0]='0';
     strcat(time,min_c);
-    time[1]=':';
-    time[2]='\0';
+    time[2]=':';
     if(sec<10)
-    {
-        time[2]='0';
-        time[3]='\0';
-    }
+        time[3]='0';
     strcat(time,sec_c);
 
     return time;
 }
 
-void afficher_score_board_graphics(int start,int nbr_secondes)
+void afficher_score_board_graphics()
 {
-
-
     Joueur *nvJoueur = NULL;
     boolean continuer = true;
     SDL_Event event;
@@ -512,24 +506,24 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
     SDL_Rect position_input_box;
     SDL_Rect position_play;
     SDL_Rect position_temp;
+    SDL_Color couleurNoire = {0,0,0};
 
-
-
+    SDL_Color couleurBleu = {65,105,225};
+    int max_taille_input=10;
+    int taille_input_courant=0;
+    SDL_Surface *header=NULL,*header_surface=NULL,*image_background=NULL;
+    char header_mot[20];
+    char nbr_joueur[4];
 
     //requires for score board
-    int i;
-    char formatage_des_scores[10][500],time[10];
+    int nbr_secondes=30,i,taille_fleche=0;
+    char formatage_des_scores[10][500];
     Tab_Score_board records;
-    SDL_Surface *record_surface,*fleche_droite,*fleche_gauche,*surface_Nombre_time,*Nombre_time;
+    SDL_Surface *record_surface;
     SDL_Color couleurBlanche = {255, 255, 255};
     SDL_Color couleurJaune = {255, 255, 0};
     SDL_Rect positionArrow_left;
     SDL_Rect positionArrow_right;
-    SDL_Rect positionArrow_left_time,positionArrow_right_time;
-    char header_mot[20];
-    SDL_Surface *header=NULL,*header_surface=NULL,*image_background=NULL;
-    SDL_Color couleurNoire = {0,0,0};
-    SDL_Color couleurBleu = {65,105,225};
 
     //1 background
     image_background = SDL_LoadBMP("img/background_joueur1.bmp");
@@ -551,7 +545,8 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
     SDL_SetAlpha(header_surface, SDL_SRCALPHA, 180);
     SDL_FillRect(header_surface,NULL,SDL_MapRGB(myGame.screen->format, 255, 255, 255));
     //concatenation de header
-    strcpy(header_mot,"          Score             ");
+    sprintf(nbr_joueur,"%d",myGame.nbr_joueur);
+    strcpy(header_mot,"      sorted by time     ");
     strcat(header_mot,"      time ");
     strcat(header_mot,get_time(nbr_secondes*1000));
     strcat(header_mot,"  4x4");
@@ -590,46 +585,8 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
     SDL_FreeSurface(header_surface);
 
 
-    //navigation time
-    myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",22);
-    header_surface = TTF_RenderText_Blended(myGame.police,"Time :",couleurBlanche);
-    TTF_CloseFont(myGame.police);
-    position.x=40;
-    position.y=100;
-    SDL_BlitSurface(header_surface,NULL,myGame.screen,&position);
-    SDL_FreeSurface(header_surface);
-    //affichage des boutons de navigation
-     fleche_gauche = SDL_LoadBMP("img/left.bmp");
-     SDL_SetColorKey(fleche_gauche, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_gauche->format, 255, 255, 255));
-     positionArrow_left_time.x=myGame.screen->w/2-fleche_gauche->w;
-     positionArrow_left_time.y=92;
-     SDL_BlitSurface(fleche_gauche, NULL, myGame.screen,&positionArrow_left_time);
-     SDL_FreeSurface(fleche_gauche);
-     fleche_droite = SDL_LoadBMP("img/right.bmp");
-     SDL_SetColorKey(fleche_droite, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_droite->format, 255, 255, 255));
-     positionArrow_right_time.x=myGame.screen->w/2+fleche_droite->w*2.2;
-     positionArrow_right_time.y=92;
-     SDL_BlitSurface(fleche_droite, NULL, myGame.screen,&positionArrow_right_time);
-     SDL_FreeSurface(fleche_droite);
-     //logo time
-    header_surface = SDL_LoadBMP("img/time.bmp");
-    SDL_SetColorKey(header_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255, 255, 255));
-    position.x=positionArrow_left_time.x+30;
-    position.y=80;
-    SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
-    SDL_FreeSurface(header_surface);
-    //time value
-    myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",22);
-    Nombre_time= TTF_RenderText_Blended(myGame.police,get_time(nbr_secondes*1000),couleurBlanche);
-    TTF_CloseFont(myGame.police);
-    position.x=positionArrow_left_time.x+90;
-    position.y=100;
-    SDL_BlitSurface(Nombre_time,NULL,myGame.screen,&position);
-    SDL_FreeSurface(Nombre_time);
-
-
     //formatage des scores
-    records = best_score_by_time(start,5,nbr_secondes);
+    records = best_score_by_time(0,10,30);
     for(i=0 ; i < records.nb_records ; i++)
     {
 
@@ -658,91 +615,38 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
 
 
     //affichage des boutons de navigation
-     fleche_gauche = SDL_LoadBMP("img/left.bmp");
-     SDL_SetColorKey(fleche_gauche, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_gauche->format, 255, 255, 255));
-     positionArrow_left.x=myGame.screen->w/2-fleche_gauche->w*2;
+     record_surface = SDL_LoadBMP("img/left.bmp");
+     SDL_SetColorKey(record_surface, SDL_SRCCOLORKEY, SDL_MapRGB(record_surface->format, 255, 255, 255));
+     positionArrow_left.x=myGame.screen->w/2-record_surface->w*2;
      positionArrow_left.y=myGame.screen->h-TAILLE_CASE;
-     SDL_BlitSurface(fleche_gauche, NULL, myGame.screen,&positionArrow_left);
-     //SDL_FreeSurface(fleche_gauche);
-     fleche_droite = SDL_LoadBMP("img/right.bmp");
-     SDL_SetColorKey(fleche_droite, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_droite->format, 255, 255, 255));
-     positionArrow_right.x=myGame.screen->w/2+fleche_droite->w;
+     SDL_BlitSurface(record_surface, NULL, myGame.screen,&positionArrow_left);
+     SDL_FreeSurface(record_surface);
+     record_surface = SDL_LoadBMP("img/right.bmp");
+     SDL_SetColorKey(record_surface, SDL_SRCCOLORKEY, SDL_MapRGB(record_surface->format, 255, 255, 255));
+     positionArrow_right.x=myGame.screen->w/2+record_surface->w;
      positionArrow_right.y=myGame.screen->h-TAILLE_CASE;
-     SDL_BlitSurface(fleche_droite, NULL, myGame.screen,&positionArrow_right);
-     //SDL_FreeSurface(fleche_droite);
+     SDL_BlitSurface(record_surface, NULL, myGame.screen,&positionArrow_right);
+     SDL_FreeSurface(record_surface);
 
     SDL_EnableKeyRepeat(100,100);
 
-    while(!myGame.quitter)
+    while(continuer)
     {
         SDL_WaitEvent(&event);
         switch(event.type)
         {
             case SDL_QUIT:
                 myGame.quitter=true;
+                continuer = false;
             break;
 
             case SDL_MOUSEBUTTONDOWN:
 
                 //clique sur navigation droite
-                if( (event.button.x >= positionArrow_right.x) && (event.button.x<= positionArrow_right.x+fleche_droite->w)
-                   && (event.button.y >= positionArrow_right.y) && (event.button.y<= positionArrow_right.y+fleche_droite->h)
-                   ){
-
-                      //liberation
-                       SDL_FreeSurface(fleche_droite);
-                       SDL_FreeSurface(fleche_gauche);
-                       afficher_score_board_graphics(start+5,nbr_secondes);
-
-
-                   }
-                   //clique sur navigation gauche
-                if( (event.button.x >= positionArrow_left.x) && (event.button.x<= positionArrow_left.x+fleche_gauche->w)
-                   && (event.button.y >= positionArrow_left.y) && (event.button.y<= positionArrow_left.y+fleche_gauche->h)
-                   ){
-                       if(start-5>0)
-                       {
-
-                           //liberation
-                           SDL_FreeSurface(fleche_droite);
-                           SDL_FreeSurface(fleche_gauche);
-                           afficher_score_board_graphics(start-5,nbr_secondes);
-
-                   }
-               }
-                       //fleche gauche time
-                    if( (event.button.x >= positionArrow_left_time.x) && (event.button.x<= positionArrow_left_time.x+fleche_gauche->w)
-                    && (event.button.y >= positionArrow_left_time.y) && (event.button.y<= positionArrow_left_time.y+fleche_gauche->h)
-                   ){
-
-                        if(nbr_secondes>60)
-                        {
-
-                           //liberation
-                           SDL_FreeSurface(fleche_droite);
-                           SDL_FreeSurface(fleche_gauche);
-                           afficher_score_board_graphics(1,nbr_secondes-60);
-
-                        }
-
-                   }
-                   //fleche gauche time
-                    if( (event.button.x >= positionArrow_right_time.x) && (event.button.x<= positionArrow_right_time.x+fleche_gauche->w)
-                    && (event.button.y >= positionArrow_right_time.y) && (event.button.y<= positionArrow_right_time.y+fleche_gauche->h)
-                   ){
-
-                        if(nbr_secondes<5*60)
-                        {
-
-                           //liberation
-                           SDL_FreeSurface(fleche_droite);
-                           SDL_FreeSurface(fleche_gauche);
-                            afficher_score_board_graphics(1,nbr_secondes+60);
-
-                        }
-
-                   }
-
+                if( (event.button.x >= positionArrow_right.x) && (event.button.x<= positionArrow_right.x+play_surface->w)
+                   && (event.button.y >= position_temp.y) && (event.button.y<= position_temp.y+play_surface->h)
+                   )
+                   //continuer = false;
              break;
 
 
@@ -755,6 +659,8 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
         SDL_Flip(myGame.screen);
     }
     //liberation
+    SDL_FreeSurface(input_box);
+    TTF_CloseFont(myGame.police);
 
 }
 //fonction menu
@@ -998,12 +904,12 @@ void menu_game()
                         myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
                         initialisation_game();
                         TTF_CloseFont(myGame.police);
-afficher_score_board_graphics(1,60);
+afficher_score_board_graphics();
                             //initialisation de joueur returne le nom de joueur
                             myGame.joueur[0]=initialisation_joueur();
 
                             myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
-
+myGame.nbr_seconde=30;
                             //si le joueur n'a pas quitter ke jeu
                             if(myGame.quitter==false)
                              play_game(0);
