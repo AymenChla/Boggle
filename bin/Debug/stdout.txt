@@ -1,1 +1,472 @@
+120
+youssef
+solo
+nbpoint:13
+nbmot:3
+score: 13
+LAVE	1
+VAL	1
+VA	11
+30
+aymen
+solo
+nbpoint:5
+nbmot:5
+score: 5
+SES	1
+TES	1
+MES	1
+PROS	1
+PRO	1
+30
+akram
+solo
+nbpoint:2
+nbmot:2
+score: 2
+REIS	1
+TES	1
+30
 
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+bonjour
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+HJH
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+HELLO
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+180
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+aymen
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+a
+solo
+nbpoint:0
+nbmot:0
+score: 0
+120
+aymen
+solo
+nbpoint:0
+nbmot:0
+score: 0
+30
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
+60
+
+solo
+nbpoint:0
+nbmot:0
+score: 0
