@@ -218,7 +218,7 @@
 1485395308 c:\users\acer\desktop\projet c\boggle\joueur.h
 	"score.h"
 
-1485395309 c:\users\acer\desktop\projet c\boggle\score.h
+1485626521 c:\users\acer\desktop\projet c\boggle\score.h
 	"generale.h"
 
 1485395309 source:c:\users\acer\desktop\projet c\boggle\pile.c
@@ -226,7 +226,7 @@
 	<stdlib.h>
 	"pile.h"
 
-1485456797 source:c:\users\acer\desktop\projet c\boggle\plateau.c
+1485627345 source:c:\users\acer\desktop\projet c\boggle\plateau.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -235,13 +235,13 @@
 	"generale.h"
 	"game.h"
 
-1485456797 source:c:\users\acer\desktop\projet c\boggle\score.c
+1485626521 source:c:\users\acer\desktop\projet c\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"score.h"
 
-1485458512 source:c:\users\acer\desktop\projet c\boggle\game.c
+1485627345 source:c:\users\acer\desktop\projet c\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -251,7 +251,7 @@
 	"game.h"
 	"pile.h"
 
-1485458434 source:c:\users\acer\desktop\projet c\boggle\joueur.c
+1485571925 source:c:\users\acer\desktop\projet c\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -259,4 +259,70 @@
 	<SDL.h>
 	<SDL_ttf.h>
 	"game.h"
+
+1485625430 source:c:\users\youssef\desktop\boggle\game.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<SDL.h>
+	<SDL_ttf.h>
+	"game.h"
+	"pile.h"
+
+1485623273 c:\users\youssef\desktop\boggle\game.h
+	<SDL_ttf.h>
+	"plateau.h"
+	"joueur.h"
+
+1485230542 c:\users\youssef\desktop\boggle\plateau.h
+	<SDL.h>
+	"generale.h"
+	"pile.h"
+
+1485271673 c:\users\youssef\desktop\boggle\generale.h
+
+1485230542 c:\users\youssef\desktop\boggle\pile.h
+	"generale.h"
+
+1485230542 c:\users\youssef\desktop\boggle\joueur.h
+	"score.h"
+
+1485369339 c:\users\youssef\desktop\boggle\score.h
+	"generale.h"
+
+1485459776 source:c:\users\youssef\desktop\boggle\joueur.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"joueur.h"
+	<SDL.h>
+	<SDL_ttf.h>
+	"game.h"
+
+1485371350 source:c:\users\youssef\desktop\boggle\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"game.h"
+
+1485230542 source:c:\users\youssef\desktop\boggle\pile.c
+	<stdio.h>
+	<stdlib.h>
+	"pile.h"
+
+1485536372 source:c:\users\youssef\desktop\boggle\plateau.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"plateau.h"
+	"generale.h"
+	"game.h"
+
+1485459777 source:c:\users\youssef\desktop\boggle\score.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"score.h"
 
