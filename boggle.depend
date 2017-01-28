@@ -218,7 +218,7 @@
 1485395308 c:\users\acer\desktop\projet c\boggle\joueur.h
 	"score.h"
 
-1485626521 c:\users\acer\desktop\projet c\boggle\score.h
+1485628931 c:\users\acer\desktop\projet c\boggle\score.h
 	"generale.h"
 
 1485395309 source:c:\users\acer\desktop\projet c\boggle\pile.c
@@ -226,7 +226,7 @@
 	<stdlib.h>
 	"pile.h"
 
-1485627345 source:c:\users\acer\desktop\projet c\boggle\plateau.c
+1485628931 source:c:\users\acer\desktop\projet c\boggle\plateau.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -235,13 +235,13 @@
 	"generale.h"
 	"game.h"
 
-1485626521 source:c:\users\acer\desktop\projet c\boggle\score.c
+1485628931 source:c:\users\acer\desktop\projet c\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"score.h"
 
-1485627345 source:c:\users\acer\desktop\projet c\boggle\game.c
+1485628931 source:c:\users\acer\desktop\projet c\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
