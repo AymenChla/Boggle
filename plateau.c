@@ -14,9 +14,11 @@ Plateau *initialiser_plateau()
     char *pChar=NULL;
     Plateau *nvPlat = NULL;
     SDL_Color couleurBlanche = {255,255,255};
+    SDL_Color couleurOrange = {255,75,20};
+    SDL_Color couleurNoir ={0 ,0 ,0};
     SDL_Rect position;
 
-
+    myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",21);
     nvPlat = (Plateau *) malloc(sizeof(Plateau));
 
     nvPlat->mot_courant[0]='\0';
@@ -53,7 +55,7 @@ Plateau *initialiser_plateau()
             pChar = &nvPlat->cases[i][j].lettre_face;
             pChar[1]='\0';
 
-            nvPlat->cases[i][j].caractere = TTF_RenderText_Blended(myGame.police, pChar , couleurBlanche);
+            nvPlat->cases[i][j].caractere = TTF_RenderText_Blended(myGame.police, pChar , couleurNoir);
             if(nvPlat->cases[i][j].caractere==NULL)
                 error("ttf_render caractere");
 
@@ -61,7 +63,7 @@ Plateau *initialiser_plateau()
              if(nvPlat->cases[i][j].surface_case==NULL)
                 error("ttf_render caractere");
 
-            SDL_FillRect(nvPlat->cases[i][j].surface_case,NULL,SDL_MapRGB(nvPlat->cases[i][j].surface_case->format,47,87,145));
+            SDL_FillRect(nvPlat->cases[i][j].surface_case,NULL,SDL_MapRGB(nvPlat->cases[i][j].surface_case->format,255,255,255));
 
             position.x = (nvPlat->cases[i][j].surface_case->w-nvPlat->cases[i][j].caractere->w)/2;
             position.y = (nvPlat->cases[i][j].surface_case->h-nvPlat->cases[i][j].caractere->h)/2;
@@ -72,7 +74,8 @@ Plateau *initialiser_plateau()
 
 
      nvPlat->surface_plateau = SDL_CreateRGBSurface(SDL_HWSURFACE,TAILLE_PLATEAU,TAILLE_PLATEAU,32,0,0,0,0);
-     SDL_FillRect(nvPlat->surface_plateau,NULL,SDL_MapRGB(nvPlat->surface_plateau->format,255,255,255));
+     SDL_FillRect(nvPlat->surface_plateau,NULL,SDL_MapRGB(nvPlat->surface_plateau->format,204, 221, 255));
+
 
 
 
@@ -103,21 +106,6 @@ void liberation_plateau(Plateau *plat)
 {
     free(plat);
 }
-
-
-/*void afficher_plateau(Plateau *p)
-{
-    int i,j;
-
-    for(i=0 ; i < NB_LIGNE ; i++)
-    {
-        for(j = 0 ; j < NB_COLONNE ; j++)
-        {
-            printf("|\t%c\t",p->matrice[i][j]);
-        }
-        printf("\n");
-    }
-}*/
 
 
 
