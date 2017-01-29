@@ -22,6 +22,7 @@
 
     //pour l'affichage du score
     typedef struct{
+        int id_partie;
         char nom_joueur[20];
         char vs[20];
         Score score;
@@ -33,6 +34,7 @@
         int nb_records;
     }Tab_Score_board;
 
+
     int nb_points(char *);
     Mot *creer_mot(char*);
     Score* initialisation_score();
@@ -41,7 +43,7 @@
     void afficher_score(Score* );
     void liberation_score(Score *score);
     void sauvegarder_score(char *nom_joueur,char *vs,Score* score,int nb_secondes);
-    void sauvegarder_score_trier(char *nom_joueur,char *vs,Score* score,int nb_secondes);
+    void sauvegarder_score_trier(int id_partie,char *nom_joueur,char *vs,Score* score,int nb_secondes);
     void affichage_score_board();
     Tab_Score_board best_score_by_time(int start,int nb_records,int nb_secondes);
     Tab_Score_board best_score_by_player_by_time(int start,int nb_records,int nb_secondes);
@@ -49,6 +51,7 @@
     void afficher_score_board(Tab_Score_board tab_scores);
     Tab_Score_board get_all_scores();
     void save_record(Score_board record,FILE *fichier);
+    void trier_score_board(Tab_Score_board tab_scores);
 
 
 #endif // SCORE_H

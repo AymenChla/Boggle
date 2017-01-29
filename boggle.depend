@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1485628931 source:c:\users\acer\desktop\projet c\boggle\game.c
+1485706854 source:c:\users\acer\desktop\projet c\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -224,7 +224,7 @@
 
 1485456797 D
 
-1485629392 c:\users\acer\desktop\projet c\boggle\score.h
+1485668320 c:\users\acer\desktop\projet c\boggle\score.h
 	"generale.h"
 
 1485580437 re_board
@@ -248,7 +248,7 @@
 	<string.h>
 	"score.h"
 
-1485571925 source:c:\users\acer\desktop\projet c\boggle\joueur.c
+1485645437 source:c:\users\acer\desktop\projet c\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -268,7 +268,7 @@
 
 1485405046 source:c:\users\acer\desktop\projet c\boggle\main.c
 
-1485629392 source:c:\users\acer\desktop\projet c\boggle\score.c
+1485647295 source:c:\users\acer\desktop\projet c\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
