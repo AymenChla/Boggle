@@ -63,5 +63,6 @@
     void preparation_joueurs();
     void menu_joueur();
     char* get_input(SDL_KeyboardEvent *key);
+    void affiche_help();
 
 #endif // GAME_H

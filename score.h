@@ -49,6 +49,7 @@
     void afficher_score_board(Tab_Score_board tab_scores);
     Tab_Score_board get_all_scores();
     void save_record(Score_board record,FILE *fichier);
+    void afficher_cinq_mot(int j,int partie);
 
 
 #endif // SCORE_H

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <SDL_ttf.h>
+#include "game.h"
 #include "score.h"
 
 
@@ -486,6 +487,43 @@ void trier_score_board(Tab_Score_board tab_scores)
             }
         }
     }
+}
+
+void afficher_cinq_mot(int j,int partie)
+{
+
+    SDL_Surface *afficher = NULL;
+    SDL_Rect position;
+    SDL_Color couleurNoir={0,0,0};
+    int i=0;
+    Mot *tete;
+
+   tete = myGame.joueur[j]->score->teteMots;
+
+    while(i<partie*5 && tete != NULL){ tete = tete->suivant;
+        i++;
+    }
+    
+   if(tete != NULL){
+    for(i=0;i<5;i++){
+
+        if(tete!=NULL){
+    afficher = TTF_RenderText_Blended(myGame.police,tete->info->mot,couleurNoir);
+    position.x=150;
+    position.y=460+i*19;
+    
+    SDL_BlitSurface(afficher,NULL,myGame.screen,&position);
+    SDL_FreeSurface(afficher);
+    tete = tete->suivant;
+
+    }else{
+
+        //return 0;
+    }
+
+    }
+}
+
 }
 
 

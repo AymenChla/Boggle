@@ -92,7 +92,8 @@ boolean can_be_hovered(int i,int j)
 
 void play_game(int num_joueur)
 {
-    int i=0,j=0;
+
+    int i=0,j=0,partie=0;
     SDL_Event event;
     boolean continuer=true;
     Uint32 couleur_hover=SDL_MapRGB(myGame.plateau->surface_plateau->format,45,78,102);
@@ -138,6 +139,21 @@ void play_game(int num_joueur)
     //collage bouton valider
     SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
     SDL_FreeSurface(myGame.btn_outils->valider);
+    //down and up
+    plateau_mot = SDL_LoadBMP("img/up.bmp");
+    SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+    position.x=WIDTH_SCREEN-25;
+    position.y=450;
+    SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+    SDL_FreeSurface(plateau_mot);
+    plateau_mot = SDL_LoadBMP("img/down.bmp");
+    SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+    position.x=WIDTH_SCREEN-25;
+    position.y=TAILLE_PLATEAU+270;
+    SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+    SDL_FreeSurface(plateau_mot);
+
+
     //creer l'interface plateur des mot affichable
     plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
     SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
@@ -152,7 +168,7 @@ void play_game(int num_joueur)
     SDL_FreeSurface(myGame.btn_outils->mot_courant);
 
 
-    
+
     //collage surface de score
     position.x=6;
     position.y=8;
@@ -162,6 +178,7 @@ void play_game(int num_joueur)
     SDL_FreeSurface(myGame.btn_outils->score_text);
     position.x = (myGame.plateau->cases[i][j].surface_case->w-myGame.plateau->cases[i][j].caractere->w)/2;
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
+
     while(continuer)
     {
 
@@ -317,6 +334,7 @@ void play_game(int num_joueur)
                             if(valider_mot() && strlen(myGame.plateau->mot_courant)>2)
                             {
 
+                                partie = 0;
                                 inserer_mot(myGame.joueur[num_joueur]->score,myGame.plateau->mot_courant);
                                 char message_score[50];
                                 sprintf(message_score,"score: %d (+%d)",myGame.joueur[num_joueur]->score->nb_points,nb_points(myGame.plateau->mot_courant));
@@ -327,10 +345,48 @@ void play_game(int num_joueur)
                                 SDL_BlitSurface(myGame.btn_outils->score_text,NULL,myGame.btn_outils->score_surface,&position);
                                 SDL_BlitSurface(myGame.btn_outils->score_surface,NULL,myGame.screen,&myGame.btn_outils->position_score);
                                 SDL_FreeSurface(myGame.btn_outils->score_text);
+                                plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+                                SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+                                position.x=130;
+                                position.y=440;
+                                SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+                                SDL_FreeSurface(plateau_mot);
+                                afficher_cinq_mot(num_joueur,partie);
 
                             }
 
                        }
+
+                    if(event.button.x >= WIDTH_SCREEN-25 &&  event.button.y >=450 && event.button.x <= WIDTH_SCREEN && event.button.y <= 450+25 && partie>0){
+                        partie--;
+                        plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+                        SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+                        position.x=130;
+                        position.y=440;
+                        SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+                        SDL_FreeSurface(plateau_mot);
+                        afficher_cinq_mot(num_joueur,partie);
+
+                    }else{
+
+                         if(event.button.x >= WIDTH_SCREEN-25 &&  event.button.y >=TAILLE_PLATEAU+270 && event.button.x <= WIDTH_SCREEN && event.button.y <= TAILLE_PLATEAU+295 && partie*5 < myGame.joueur[num_joueur]->score->nb_mots){
+                        partie++;
+                        if(partie*5 < myGame.joueur[num_joueur]->score->nb_mots){
+                        plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+                        SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+                        position.x=130;
+                        position.y=440;
+                        SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+                        SDL_FreeSurface(plateau_mot);
+                        afficher_cinq_mot(num_joueur,partie);
+                    }
+
+                    }
+
+
+                    }
+
+
                 break;
 
                 default:
@@ -782,7 +838,82 @@ void afficher_score_board_graphics(int start,int nbr_secondes)
     }
     //liberation
 }
+void affiche_help(){
 
+
+    SDL_Surface *help_surface,*help;
+    SDL_Rect position;
+    SDL_Event event;
+    int page = 1;
+
+    SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
+
+
+
+
+    help=SDL_LoadBMP("img/help1.bmp");
+    position.x=10;
+    position.y=5;
+
+    SDL_BlitSurface(help, NULL, myGame.screen,&position);
+    SDL_Flip(myGame.screen);
+    SDL_FreeSurface(help);
+
+    while(myGame.quitter!=true)
+    {
+       SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_QUIT:
+                myGame.quitter=true;
+
+            break;
+             case SDL_MOUSEBUTTONDOWN:
+
+                //clique sur bouton jouer
+                if( (event.button.x >= WIDTH_SCREEN-60) && (event.button.x<= WIDTH_SCREEN)
+                   && (event.button.y >= 0) && (event.button.y<= 40)
+                   ){
+
+                    if(page==1){
+                        SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
+                        help=SDL_LoadBMP("img/help2.bmp");
+                        position.x=10;
+                        position.y=5;
+                        SDL_BlitSurface(help, NULL, myGame.screen,&position);
+                        SDL_Flip(myGame.screen);
+                        SDL_FreeSurface(help);
+                        page=2;
+                    }else{
+                        SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
+                        help=SDL_LoadBMP("img/help1.bmp");
+                        position.x=10;
+                        position.y=5;
+                        SDL_BlitSurface(help, NULL, myGame.screen,&position);
+                        SDL_Flip(myGame.screen);
+                        SDL_FreeSurface(help);
+                        page=1;
+
+
+                    }
+
+                }
+                if( (event.button.x >= 0) && (event.button.x<= 100)
+                   && (event.button.y >= 0) && (event.button.y<= 40)
+                   ){
+
+
+                    menu_game();
+                }
+
+                break;
+
+        }
+
+
+    }
+
+}
 //fonction menu
 void menu_game()
 {
@@ -1091,7 +1222,7 @@ void menu_game()
                         myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
                         initialisation_game();
                         TTF_CloseFont(myGame.police);
-afficher_score_board_graphics(1,60);
+//afficher_score_board_graphics(1,60);
                             //initialisation de joueur returne le nom de joueur
                             myGame.joueur[0]=initialisation_joueur();
 
@@ -1219,6 +1350,10 @@ afficher_score_board_graphics(1,60);
 
                    }
 
+                   if(event.button.x >= 2*355/3  && event.button.y >= 0 && event.button.x <= 2*355/3+355/3 && event.button.y <=45){
+
+                        affiche_help();
+                   }
 
 
                        myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",22);
