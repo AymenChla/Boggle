@@ -43,7 +43,7 @@
     void afficher_score(Score* );
     void liberation_score(Score *score);
     void sauvegarder_score(char *nom_joueur,char *vs,Score* score,int nb_secondes);
-    void sauvegarder_score_trier(int id_partie,char *nom_joueur,char *vs,Score* score,int nb_secondes);
+    void sauvegarder_score_trier(char *nom_joueur,char *vs,Score* score,int nb_secondes,int id_courant);
     void affichage_score_board();
     Tab_Score_board best_score_by_time(int start,int nb_records,int nb_secondes);
     Tab_Score_board best_score_by_player_by_time(int start,int nb_records,int nb_secondes);
@@ -52,6 +52,7 @@
     Tab_Score_board get_all_scores();
     void save_record(Score_board record,FILE *fichier);
     void trier_score_board(Tab_Score_board tab_scores);
-
+    int recuperer_id_courant();
+    Score_board information_adversaire(char *nom_adversaire,int id_partie);
 
 #endif // SCORE_H

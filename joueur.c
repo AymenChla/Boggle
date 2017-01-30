@@ -116,9 +116,6 @@ Joueur* initialisation_joueur()
 
 
 
-
-
-
     //initialisation du bouton start
     strcpy(nbr_joueur,"START");
 
@@ -197,7 +194,7 @@ Joueur* initialisation_joueur()
                         if(strlen(nvJoueur->nom)>=3)
                             continuer=false;
                     }
-                   
+
              break;
 
             default:

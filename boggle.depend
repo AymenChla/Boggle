@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1485706854 source:c:\users\acer\desktop\projet c\boggle\game.c
+1485752918 source:c:\users\acer\desktop\projet c\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -204,7 +204,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1485456797 c:\users\acer\desktop\projet c\boggle\game.h
+1485751831 c:\users\acer\desktop\projet c\boggle\game.h
 	<SDL_ttf.h>
 	"plateau.h"
 	"joueur.h"
@@ -214,7 +214,7 @@
 	"generale.h"
 	"pile.h"
 
-1485395308 c:\users\acer\desktop\projet c\boggle\generale.h
+1485733005 c:\users\acer\desktop\projet c\boggle\generale.h
 
 1485395309 c:\users\acer\desktop\projet c\boggle\pile.h
 	"generale.h"
@@ -224,7 +224,7 @@
 
 1485456797 D
 
-1485668320 c:\users\acer\desktop\projet c\boggle\score.h
+1485742489 c:\users\acer\desktop\projet c\boggle\score.h
 	"generale.h"
 
 1485580437 re_board
@@ -248,7 +248,7 @@
 	<string.h>
 	"score.h"
 
-1485645437 source:c:\users\acer\desktop\projet c\boggle\joueur.c
+1485743223 source:c:\users\acer\desktop\projet c\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -257,7 +257,7 @@
 	<SDL_ttf.h>
 	"game.h"
 
-1485628931 source:c:\users\acer\desktop\projet c\boggle\plateau.c
+1485753045 source:c:\users\acer\desktop\projet c\boggle\plateau.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -266,9 +266,13 @@
 	"generale.h"
 	"game.h"
 
-1485405046 source:c:\users\acer\desktop\projet c\boggle\main.c
+1485749697 source:c:\users\acer\desktop\projet c\boggle\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"game.h"
 
-1485647295 source:c:\users\acer\desktop\projet c\boggle\score.c
+1485742414 source:c:\users\acer\desktop\projet c\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
