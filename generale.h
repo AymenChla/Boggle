@@ -15,5 +15,4 @@
 
     typedef enum{false, true} boolean;
 
-
 #endif // GENERALE_H

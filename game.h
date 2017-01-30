@@ -42,6 +42,9 @@
         //pour quitter le jeu si on est dans une fenetre intermediare
         boolean quitter;
 
+        //pour les parties
+        int next_id;
+
     } Game;
 
     Game myGame;
@@ -63,6 +66,10 @@
     void preparation_joueurs();
     void menu_joueur();
     char* get_input(SDL_KeyboardEvent *key);
+
     void affiche_help();
+
+    void afficher_resultat(Score_board record);
+
 
 #endif // GAME_H

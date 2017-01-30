@@ -5,6 +5,24 @@
 #include "game.h"
 #include "score.h"
 
+int recuperer_id_courant()
+{
+    int id;
+    FILE* fichier=NULL;
+    fichier = fopen("scores.dta","rb");
+    if(fichier!=NULL)
+    {
+
+        fread(&id,sizeof(int),1,fichier);
+        fclose(fichier);
+        return id;
+
+    }
+    else
+        fprintf(stderr,"can't open the file recuperer courant id\n");
+
+    return 0;
+}
 
 void afficher_score(Score* score)
 {
@@ -119,7 +137,7 @@ void liberation_score(Score *score)
     free(score);
 }
 
-void recuperer()
+/*void recuperer()
 {
     Score_board record;
     FILE* fichier=NULL;
@@ -177,9 +195,9 @@ void recuperer()
         fprintf(stderr,"can't open the file\n");
     }
 
-}
+}*/
 
-void sauvegarder_score(char *nom_joueur, char *vs,Score *score,int nb_secondes)
+/*void sauvegarder_score(char *nom_joueur, char *vs,Score *score,int nb_secondes)
 {
     FILE* fichier=NULL;
     Mot *temp;
@@ -215,7 +233,7 @@ void sauvegarder_score(char *nom_joueur, char *vs,Score *score,int nb_secondes)
     {
         fprintf(stderr,"can't open the file\n");
     }
-}
+}*/
 
 Tab_Score_board best_score_by_time(int start,int nb_records,int nb_secondes)
 {
@@ -241,6 +259,7 @@ Tab_Score_board best_score_by_time(int start,int nb_records,int nb_secondes)
                 //inserer nv score
                 records_i_want.records = (Score_board*) realloc(records_i_want.records,records_i_want.nb_records*sizeof(Score_board));
                 records_i_want.records[records_i_want.nb_records-1].nb_secondes = nb_secondes;
+                records_i_want.records[records_i_want.nb_records-1].id_partie=all_records.records[i].id_partie;
                 strcpy(records_i_want.records[records_i_want.nb_records-1].nom_joueur,all_records.records[i].nom_joueur);
                 strcpy(records_i_want.records[records_i_want.nb_records-1].vs,all_records.records[i].vs);
                 records_i_want.records[records_i_want.nb_records-1].score.nb_mots=0;
@@ -266,7 +285,7 @@ Tab_Score_board get_all_scores()
     Tab_Score_board tab_scores;
     FILE* fichier=NULL;
     DonneesMot *infos=NULL;
-    int i=0,nb_mots=0,nb_secondes=0;
+    int i=0,nb_mots=0,nb_secondes=0,id_courant=0;
 
     tab_scores.records=NULL;
     tab_scores.nb_records=0;
@@ -274,6 +293,9 @@ Tab_Score_board get_all_scores()
     fichier = fopen("scores.dta","rb");
     if(fichier!=NULL)
     {
+        //recuperer id courant
+        fread(&id_courant,sizeof(int),1,fichier);
+
         //recuperer nb_secondes et test si EOF
         while(fread(&nb_secondes,sizeof(int),1,fichier)==1)
         {
@@ -285,6 +307,9 @@ Tab_Score_board get_all_scores()
 
             //affectation nb_secondes
             tab_scores.records[tab_scores.nb_records-1].nb_secondes = nb_secondes;
+
+            //recuperer id partie
+            fread(&tab_scores.records[tab_scores.nb_records-1].id_partie,sizeof(int),1,fichier);
 
             //recuperer nom joueur
             fread(tab_scores.records[tab_scores.nb_records-1].nom_joueur,sizeof(char),20,fichier);
@@ -324,9 +349,10 @@ Tab_Score_board get_all_scores()
 void afficher_score_board(Tab_Score_board tab_scores)
 {
     int i;
+
     for(i=0 ;i < tab_scores.nb_records ; i++)
     {
-
+        fprintf(stdout,"%d\n",tab_scores.records[i].id_partie);
         fprintf(stdout,"%d\n",tab_scores.records[i].nb_secondes);
         fprintf(stdout,"%s\n",tab_scores.records[i].nom_joueur);
         fprintf(stdout,"%s\n",tab_scores.records[i].vs);
@@ -335,7 +361,7 @@ void afficher_score_board(Tab_Score_board tab_scores)
     }
 }
 
-void save_record(Score_board record,FILE *fichier)
+/*void save_record(Score_board record,FILE *fichier)
 {
 
         Mot *temp=NULL;
@@ -361,15 +387,14 @@ void save_record(Score_board record,FILE *fichier)
             temp = temp->suivant;
         }
 
-}
+}*/
 
-void sauvegarder_score_trier(char *nom_joueur, char *vs,Score *score,int nb_secondes)
+void sauvegarder_score_trier(char *nom_joueur, char *vs,Score *score,int nb_secondes,int id_courant)
 {
     Tab_Score_board tab_scores;
     FILE* fichier=NULL;
-    Mot *temp;
+    Mot *temp=NULL;
     int i;
-
 
     //recuperer tout les scores
     tab_scores = get_all_scores();
@@ -379,10 +404,9 @@ void sauvegarder_score_trier(char *nom_joueur, char *vs,Score *score,int nb_seco
     if(fichier!=NULL)
     {
 
-
-
         //inserer nv score
         tab_scores.records = (Score_board*) realloc(tab_scores.records,tab_scores.nb_records*sizeof(Score_board));
+        tab_scores.records[tab_scores.nb_records-1].id_partie = id_courant;
         tab_scores.records[tab_scores.nb_records-1].nb_secondes = nb_secondes;
         strcpy(tab_scores.records[tab_scores.nb_records-1].nom_joueur,nom_joueur);
         strcpy(tab_scores.records[tab_scores.nb_records-1].vs,vs);
@@ -397,31 +421,41 @@ void sauvegarder_score_trier(char *nom_joueur, char *vs,Score *score,int nb_seco
             temp = temp->suivant;
         }
 
+
         //trier scores
         trier_score_board(tab_scores);
+
+        //sauvegarder id courant
+        fwrite(&id_courant,sizeof(int),1,fichier);
 
         //sauvegarder les scores
         for(i=0 ; i < tab_scores.nb_records ;i++)
         {
+
              //sauvegarde nb_secondes
-        fwrite(&tab_scores.records[i].nb_secondes,sizeof(int),1,fichier);
+            fwrite(&tab_scores.records[i].nb_secondes,sizeof(int),1,fichier);
 
-        //sauvegarde nom joueur
-        fwrite(tab_scores.records[i].nom_joueur,sizeof(char),20,fichier);
 
-        //sauvegarde vs
-        fwrite(tab_scores.records[i].vs,sizeof(char),20,fichier);
+            //sauvegarder id partie
+            fwrite(&tab_scores.records[i].id_partie,sizeof(int),1,fichier);
 
-        //sauvegarde de nb mot
-        fwrite(&tab_scores.records[i].score.nb_mots,sizeof(int),1,fichier);
+            //sauvegarde nom joueur
+            fwrite(tab_scores.records[i].nom_joueur,sizeof(char),20,fichier);
 
-        //sauvegarde des mots
-        temp = tab_scores.records[i].score.teteMots;
-        while(temp != NULL)
-        {
-            fwrite(temp->info,sizeof(DonneesMot),1,fichier);
-            temp = temp->suivant;
-        }
+            //sauvegarde vs
+            fwrite(tab_scores.records[i].vs,sizeof(char),20,fichier);
+
+            //sauvegarde de nb mot
+            fwrite(&tab_scores.records[i].score.nb_mots,sizeof(int),1,fichier);
+
+            //sauvegarde des mots
+            temp = tab_scores.records[i].score.teteMots;
+            while(temp != NULL)
+            {
+                fwrite(temp->info,sizeof(DonneesMot),1,fichier);
+                temp = temp->suivant;
+            }
+
         }
             //save_record(tab_scores.records[i],fichier);
 
@@ -444,6 +478,7 @@ void trier_score_board(Tab_Score_board tab_scores)
         {
             if(tab_scores.records[j].score.nb_points > tab_scores.records[i].score.nb_points)
             {
+                temp.id_partie = tab_scores.records[j].id_partie;
                 temp.nb_secondes = tab_scores.records[j].nb_secondes;
                 strcpy(temp.nom_joueur,tab_scores.records[j].nom_joueur);
                 strcpy(temp.vs,tab_scores.records[j].vs);
@@ -458,6 +493,7 @@ void trier_score_board(Tab_Score_board tab_scores)
                 }
 
 
+                tab_scores.records[j].id_partie = tab_scores.records[i].id_partie;
                 tab_scores.records[j].nb_secondes = tab_scores.records[i].nb_secondes;
                 strcpy(tab_scores.records[j].nom_joueur,tab_scores.records[i].nom_joueur);
                 strcpy(tab_scores.records[j].vs,tab_scores.records[i].vs);
@@ -471,6 +507,7 @@ void trier_score_board(Tab_Score_board tab_scores)
                     mot_temp=mot_temp->suivant;
                 }
 
+                tab_scores.records[i].id_partie = temp.id_partie;
                 tab_scores.records[i].nb_secondes = temp.nb_secondes;
                 strcpy(tab_scores.records[i].nom_joueur,temp.nom_joueur);
                 strcpy(tab_scores.records[i].vs,temp.vs);
@@ -527,3 +564,17 @@ void afficher_cinq_mot(int j,int partie)
 }
 
 
+Score_board information_adversaire(char *nom_adversaire,int id_partie)
+{
+    Tab_Score_board all_records;
+    int i=0;
+
+    all_records = get_all_scores();
+    while(i < all_records.nb_records
+          && strcmp(nom_adversaire,all_records.records[i].nom_joueur)!=0
+          && id_partie!=all_records.records[i].id_partie)
+        i++;
+
+    if(i < all_records.nb_records)
+        return all_records.records[i];
+}

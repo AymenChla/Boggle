@@ -17,7 +17,6 @@ void liberation_joueur(Joueur* j)
 Joueur* initialisation_joueur()
 {
     Joueur *nvJoueur = NULL;
-    boolean continuer = true;
     SDL_Event event;
     SDL_Surface *input_text,*nom_text;
     SDL_Surface *input_box;
@@ -32,6 +31,7 @@ Joueur* initialisation_joueur()
     SDL_Color couleurBleu = {65,105,225};
     int max_taille_input=10;
     int taille_input_courant=0;
+    int continuer=true;
     SDL_Surface *header=NULL,*header_surface=NULL,*image_background=NULL;
     char header_mot[20];
     char nbr_joueur[4];
@@ -76,7 +76,7 @@ Joueur* initialisation_joueur()
     SDL_FreeSurface(header_surface);
 
 
-    //icone header 
+    //icone header
     header_surface = SDL_LoadBMP("img/user.bmp");
     SDL_SetColorKey(header_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
     position.x=0;
@@ -114,18 +114,15 @@ Joueur* initialisation_joueur()
     position_nom_text.x = 0;
     position_nom_text.y = 210;
 
-    
-
-    
 
 
     //initialisation du bouton start
     strcpy(nbr_joueur,"START");
-   
+
     play = TTF_RenderText_Blended(myGame.police,nbr_joueur,couleurBlanche);
 
     play_surface=SDL_LoadBMP("img/play_blanche.bmp");
-    SDL_SetColorKey(play_surface, SDL_SRCCOLORKEY, SDL_MapRGB(header_surface->format, 255,255,255));
+    SDL_SetColorKey(play_surface, SDL_SRCCOLORKEY, SDL_MapRGB(myGame.screen->format, 255,255,255));
 
 
 
@@ -149,17 +146,21 @@ Joueur* initialisation_joueur()
 
     SDL_EnableKeyRepeat(100,100);
 
-    while(continuer)
+    while(!myGame.quitter && continuer)
     {
         SDL_WaitEvent(&event);
         switch(event.type)
         {
             case SDL_QUIT:
                 myGame.quitter=true;
-                continuer = false;
             break;
 
             case SDL_KEYDOWN:
+                if(event.key.keysym.sym == SDLK_RETURN)
+                {
+                    if(strlen(nvJoueur->nom)>=3)
+                        continuer = false;
+                }
 
             	if(taille_input_courant < max_taille_input && event.key.keysym.unicode <= 0x7A && event.key.keysym.unicode >= 0x41 )
             	{
@@ -189,8 +190,11 @@ Joueur* initialisation_joueur()
                 //clique sur bouton jouer
                 if( (event.button.x >= position_temp.x) && (event.button.x<= position_temp.x+play_surface->w)
                    && (event.button.y >= position_temp.y) && (event.button.y<= position_temp.y+play_surface->h)
-                   )
-                   continuer = false;
+                   ){
+                        if(strlen(nvJoueur->nom)>=3)
+                            continuer=false;
+                    }
+
              break;
 
             default:
@@ -204,6 +208,6 @@ Joueur* initialisation_joueur()
     //liberation
     SDL_FreeSurface(input_box);
     TTF_CloseFont(myGame.police);
-    
+
     return nvJoueur;
 }
