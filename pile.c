@@ -10,7 +10,6 @@ void empiler(Pile **pile,int i,int j)
     nvNoeud->coord.j = j;
     nvNoeud->suivant = *pile;
     *pile = nvNoeud;
-    return pile;
 }
 
 Coord depiler(Pile **pile)

@@ -7,11 +7,6 @@
 #include <SDL_ttf.h>
 #include "game.h"
 
-void liberation_joueur(Joueur* j)
-{
-    liberation_score(j->score);
-    free(j);
-}
 
 
 Joueur* initialisation_joueur()
@@ -24,11 +19,9 @@ Joueur* initialisation_joueur()
    	SDL_Surface *play_surface=NULL;
     SDL_Rect position,position_relatif,position_nom_text;
     SDL_Rect position_input_box;
-    SDL_Rect position_play;
     SDL_Rect position_temp;
     SDL_Color couleurNoire = {0,0,0};
     SDL_Color couleurBlanche = {255, 255, 255};
-    SDL_Color couleurBleu = {65,105,225};
     int max_taille_input=10;
     int taille_input_courant=0;
     int continuer=true;
@@ -127,7 +120,6 @@ Joueur* initialisation_joueur()
 
 
     //make screen clean for player input menu
-   // SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,45,75,20));
         //position du text dans play_surface
     position_temp.x = (play_surface->w-play->w)/2;
     position_temp.y = (play_surface->h-play->h)/2;

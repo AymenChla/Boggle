@@ -13,8 +13,6 @@ Plateau *initialiser_plateau()
     int i,j;
     char *pChar=NULL;
     Plateau *nvPlat = NULL;
-    SDL_Color couleurBlanche = {255,255,255};
-    SDL_Color couleurOrange = {255,75,20};
     SDL_Color couleurNoir ={0 ,0 ,0};
     SDL_Rect position;
 
@@ -101,12 +99,3 @@ Plateau *initialiser_plateau()
 
     return nvPlat;
 }
-
-void liberation_plateau(Plateau *plat)
-{
-    free(plat);
-}
-
-
-
-

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1485758447 source:c:\users\acer\desktop\projet c\boggle\game.c
+1485959084 source:c:\users\acer\desktop\projet c\boggle\game.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -204,12 +204,12 @@
 	"begin_code.h"
 	"close_code.h"
 
-1485754659 c:\users\acer\desktop\projet c\boggle\game.h
+1485818979 c:\users\acer\desktop\projet c\boggle\game.h
 	<SDL_ttf.h>
 	"plateau.h"
 	"joueur.h"
 
-1485395309 c:\users\acer\desktop\projet c\boggle\plateau.h
+1485818935 c:\users\acer\desktop\projet c\boggle\plateau.h
 	<SDL.h>
 	"generale.h"
 	"pile.h"
@@ -219,12 +219,12 @@
 1485395309 c:\users\acer\desktop\projet c\boggle\pile.h
 	"generale.h"
 
-1485395308 c:\users\acer\desktop\projet c\boggle\joueur.h
+1485815126 c:\users\acer\desktop\projet c\boggle\joueur.h
 	"score.h"
 
 1485456797 D
 
-1485754580 c:\users\acer\desktop\projet c\boggle\score.h
+1485818824 c:\users\acer\desktop\projet c\boggle\score.h
 	"generale.h"
 
 1485580437 re_board
@@ -248,7 +248,7 @@
 	<string.h>
 	"score.h"
 
-1485754542 source:c:\users\acer\desktop\projet c\boggle\joueur.c
+1485819057 source:c:\users\acer\desktop\projet c\boggle\joueur.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -257,7 +257,7 @@
 	<SDL_ttf.h>
 	"game.h"
 
-1485758362 source:c:\users\acer\desktop\projet c\boggle\plateau.c
+1485959084 source:c:\users\acer\desktop\projet c\boggle\plateau.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -266,13 +266,13 @@
 	"generale.h"
 	"game.h"
 
-1485754542 source:c:\users\acer\desktop\projet c\boggle\main.c
+1485905542 source:c:\users\acer\desktop\projet c\boggle\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"game.h"
 
-1485754542 source:c:\users\acer\desktop\projet c\boggle\score.c
+1485905655 source:c:\users\acer\desktop\projet c\boggle\score.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -280,7 +280,10 @@
 	"game.h"
 	"score.h"
 
-1485395309 source:c:\users\acer\desktop\projet c\boggle\pile.c
+1485959084 source:c:\users\acer\desktop\projet c\boggle\pile.c
+	<stdio.h>
+	<stdlib.h>
+	"pile.h"
 
 1485706223 source:c:\users\youssef\desktop\boggle\game.c
 	<stdio.h>

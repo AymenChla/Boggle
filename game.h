@@ -56,19 +56,14 @@
     void saisir_mot(char*);
     boolean validation_sur_dictionnaire(char *nom_fichier,char *mot);
     void play_game(int num_joueur);
-    void end_game();
     SDL_Surface *initialisation_sdl();
     void error(char *msg);
     TTF_Font* initialisation_ttf(char *fichier,int size);
     boolean valider_mot();
     char* get_time(int);
     void menu_game();
-    void preparation_joueurs();
-    void menu_joueur();
     char* get_input(SDL_KeyboardEvent *key);
-
     void affiche_help();
-
     void afficher_resultat(Score_board record);
 
 

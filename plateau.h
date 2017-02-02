@@ -33,12 +33,6 @@
 
 
     Plateau *initialiser_plateau();
-    void liberation_plateau(Plateau *);
-    void afficher_plateau(Plateau *p);
-    //boolean validation_sur_plateau(char *mot);
-
-
-    //boolean validation_repetition(Joueur j,char *mot);
 
 #endif // PLATEAU_H
 

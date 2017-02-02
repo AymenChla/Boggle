@@ -48,13 +48,6 @@ TTF_Font* initialisation_ttf(char* nom_police,int size)
 {
         TTF_Font *police = NULL;
 
-        if(TTF_Init()== -1){
-
-            fprintf(stderr,"%s: %s\n","impossible d'initialiser la ttf: s\n",TTF_GetError());
-            exit(EXIT_FAILURE);
-        }
-
-
         police = TTF_OpenFont(nom_police,size);
         if(police == NULL)
         {
@@ -135,7 +128,7 @@ void play_game(int num_joueur)
 
     //collage bouton valider
     SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
-    SDL_FreeSurface(myGame.btn_outils->valider);
+    //SDL_FreeSurface(myGame.btn_outils->valider);
 
     //down and up
     plateau_mot = SDL_LoadBMP("img/up.bmp");
@@ -166,6 +159,11 @@ void play_game(int num_joueur)
     SDL_FreeSurface(myGame.btn_outils->surface_mot_courant);
 
 
+    myGame.btn_outils->score_surface = SDL_CreateRGBSurface(SDL_HWSURFACE,TAILLE_PLATEAU-2*TAILLE_CASE+40,40,32,0,0,0,0);
+    myGame.btn_outils->score_text =  TTF_RenderText_Blended(myGame.police,"score: 0",couleurBlanche);
+    myGame.btn_outils->position_score.x = myGame.plateau->position.x;
+   	myGame. btn_outils->position_score.y = myGame.plateau->position.y-TAILLE_CASE+20;
+
 
     //collage surface de score
     position.x=6;
@@ -177,6 +175,7 @@ void play_game(int num_joueur)
     position.x = (myGame.plateau->cases[i][j].surface_case->w-myGame.plateau->cases[i][j].caractere->w)/2;
     position.y = (myGame.plateau->cases[i][j].surface_case->h-myGame.plateau->cases[i][j].caractere->h)/2;
 
+    SDL_Flip(myGame.screen);
     while(!myGame.quitter && continuer)
     {
 
@@ -233,14 +232,14 @@ void play_game(int num_joueur)
                        {
                            myGame.btn_outils->valider = TTF_RenderText_Blended(myGame.police,"Valider",couleur_valider_hover);
                            SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
-                           //SDL_FreeSurface(myGame.btn_outils->valider);
+                           SDL_FreeSurface(myGame.btn_outils->valider);
 
                        }
                     else
                     {
                         myGame.btn_outils->valider = TTF_RenderText_Blended(myGame.police,"Valider",couleurBlanche);
                         SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
-                        //SDL_FreeSurface(myGame.btn_outils->valider);
+                        SDL_FreeSurface(myGame.btn_outils->valider);
                     }
                 break;
 
@@ -284,6 +283,7 @@ void play_game(int num_joueur)
                                     SDL_BlitSurface(myGame.btn_outils->mot_courant,NULL,myGame.btn_outils->surface_mot_courant,&position);
                                     SDL_BlitSurface(myGame.btn_outils->surface_mot_courant,NULL,myGame.screen,&myGame.btn_outils->position_mot_courant);
                                     SDL_FreeSurface(myGame.btn_outils->mot_courant);
+                                    SDL_FreeSurface(myGame.btn_outils->surface_mot_courant);
                                }
                                //pour retirer le clique
                                else if(myGame.plateau->cases[i][j].clicked == true && myGame.plateau->coordonnee_lettre->coord.i==i && myGame.plateau->coordonnee_lettre->coord.j==j)
@@ -307,6 +307,7 @@ void play_game(int num_joueur)
                                     SDL_BlitSurface(myGame.btn_outils->mot_courant,NULL,myGame.btn_outils->surface_mot_courant,&position);
                                     SDL_BlitSurface(myGame.btn_outils->surface_mot_courant,NULL,myGame.screen,&myGame.btn_outils->position_mot_courant);
                                     SDL_FreeSurface(myGame.btn_outils->mot_courant);
+                                    SDL_FreeSurface(myGame.btn_outils->surface_mot_courant);
 
                                }
 
@@ -325,7 +326,7 @@ void play_game(int num_joueur)
                        {
                            myGame.btn_outils->valider = TTF_RenderText_Blended(myGame.police,"Valider",couleur_valider_hover);
                            SDL_BlitSurface(myGame.btn_outils->valider,NULL,myGame.screen,&myGame.btn_outils->position_valider);
-                          // SDL_FreeSurface(myGame.btn_outils->valider);
+                           SDL_FreeSurface(myGame.btn_outils->valider);
 
                             //si le mot existe
                             if(valider_mot() && strlen(myGame.plateau->mot_courant)>2)
@@ -428,27 +429,6 @@ void initialisation_game()
 
 }
 
-
-void end_game()
-{
-
-    liberation_plateau(myGame.plateau);
-}
-
-
-void saisir_mot(char *mot)
-{
-
-    do{
-        printf("saisir mot: ");
-        scanf("%s",mot);
-
-        if(strlen(mot)>8 || strlen(mot) <3)
-            printf("mot invalide veuillez saisir a nouveau\n");
-    }while(strlen(mot)>8 || strlen(mot) <3 );
-
-}
-
 boolean validation_sur_dictionnaire(char *nom_fichier,char *mot)
 {
     boolean trouver = false;
@@ -462,9 +442,9 @@ boolean validation_sur_dictionnaire(char *nom_fichier,char *mot)
 
         do{
             fscanf(dictionnaire, "%s" ,mot_dictionnaire);
-        }while(!feof(dictionnaire) && strcmp(mot,mot_dictionnaire) != 0);
+        }while(!feof(dictionnaire) && strcmp(mot,strlwr(mot_dictionnaire)) != 0);
 
-        if(!strcmp(mot,mot_dictionnaire))
+        if(!strcmp(mot,strlwr(mot_dictionnaire)))
             trouver = true;
 
         fclose(dictionnaire);
@@ -480,7 +460,6 @@ Btn_outils* initialisation_btn_outils()
 {
 
     SDL_Color couleurBlanche = {255,255,255};
-    SDL_Color couleurRed ={255,0,0};
     Btn_outils* btn_outils = Malloc(1,Btn_outils);
 
     myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
@@ -579,26 +558,13 @@ char* get_time(int m_secondes)
 void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
 {
 
-
-    Joueur *nvJoueur = NULL;
-    SDL_Event event;
-    SDL_Surface *input_text,*nom_text;
-    SDL_Surface *input_box;
-   	SDL_Surface *play=NULL;
-   	SDL_Surface *play_surface=NULL;
-    SDL_Rect position,position_relatif,position_nom_text;
-    SDL_Rect position_input_box;
-    SDL_Rect position_play;
-    SDL_Rect position_temp;
-
-
-
-
     //requires for score board
+    SDL_Event event;
+    SDL_Rect position;
     int i;
-    char formatage_des_scores[10][500],time[10];
+    char formatage_des_scores[10][500];
     Tab_Score_board records;
-    SDL_Surface *record_surface,*fleche_droite,*fleche_gauche,*surface_Nombre_time,*Nombre_time;
+    SDL_Surface *record_surface,*fleche_droite,*fleche_gauche,*Nombre_time;
     SDL_Color couleurBlanche = {255, 255, 255};
     SDL_Color couleurJaune = {255, 255, 0};
     SDL_Rect positionArrow_left;
@@ -607,7 +573,6 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
     char header_mot[20];
     SDL_Surface *header=NULL,*header_surface=NULL,*image_background=NULL;
     SDL_Color couleurNoire = {0,0,0};
-    SDL_Color couleurBleu = {65,105,225};
     int width_voir,height_voir;
 
     //1 background
@@ -668,6 +633,14 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
     SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
     SDL_FreeSurface(header_surface);
 
+
+    //bouton retour
+    fleche_gauche = SDL_LoadBMP("img/leftback.bmp");
+    SDL_SetColorKey(fleche_gauche, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_gauche->format, 255, 255, 255));
+    positionArrow_left.x = 11;
+    positionArrow_left.y = 50;
+    SDL_BlitSurface(fleche_gauche,NULL,myGame.screen,&positionArrow_left);
+    SDL_FreeSurface(fleche_gauche);
 
     //navigation time
     myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",22);
@@ -753,19 +726,6 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
         position.y+=40;
     }
 
-    /*//affichage des scores
-    position.x = 40;
-    position.y = 200;
-    myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",16);
-    //TTF_SetFontStyle(myGame.police,TTF_STYLE_UNDERLINE);
-    for(i=0 ;i < records.nb_records ; i++)
-    {
-        record_surface = TTF_RenderText_Blended(myGame.police,formatage_des_scores[i],couleurJaune);
-        SDL_BlitSurface(record_surface,NULL,myGame.screen,&position);
-        SDL_FreeSurface(record_surface);
-
-        position.y+=50;
-    }*/
     TTF_CloseFont(myGame.police);
 
 
@@ -783,9 +743,9 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
      SDL_BlitSurface(fleche_droite, NULL, myGame.screen,&positionArrow_right);
      //SDL_FreeSurface(fleche_droite);
 
-
+     int continuer = true;
     SDL_Flip(myGame.screen);
-    while(!myGame.quitter)
+    while(!myGame.quitter && continuer)
     {
         SDL_WaitEvent(&event);
         switch(event.type)
@@ -795,6 +755,14 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
             break;
 
             case SDL_MOUSEBUTTONDOWN:
+
+                //clique sur retour fleche
+                if( (event.button.x >= 11) && (event.button.x<= 11+fleche_droite->w)
+                   && (event.button.y >= 50) && (event.button.y<= 50+fleche_droite->h)
+                   ){
+
+                    menu_game();
+                }
 
                 //clique sur navigation droite
                 if( (event.button.x >= positionArrow_right.x) && (event.button.x<= positionArrow_right.x+fleche_droite->w)
@@ -878,23 +846,21 @@ void afficher_score_board_graphics(int start,int nbr_secondes,int indice_hover)
 
 
         SDL_Delay(1);
+        if(myGame.quitter==false)
         SDL_Flip(myGame.screen);
     }
     //liberation
 }
+
 void affiche_help(){
 
 
-    SDL_Surface *help_surface,*help;
+    SDL_Surface *help;
     SDL_Rect position;
     SDL_Event event;
     int page = 1;
 
     SDL_FillRect(myGame.screen,NULL,SDL_MapRGB(myGame.screen->format,255,255,255));
-
-
-
-
     help=SDL_LoadBMP("img/help1.bmp");
     position.x=10;
     position.y=5;
@@ -946,8 +912,9 @@ void affiche_help(){
                    && (event.button.y >= 0) && (event.button.y<= 40)
                    ){
 
+                                    //liberation
 
-                    menu_game();
+                    return;
                 }
 
                 break;
@@ -958,13 +925,10 @@ void affiche_help(){
     }
 
 }
+
 //fonction menu
 void menu_game()
 {
-
-
-    //ab_Score_board rec =get_all_scores();
-    //afficher_score_board(rec);
 
     SDL_Surface *menu=NULL,*surface_Nombre_joueur = NULL,*surface_Nombre_time = NULL;
     SDL_Surface *menu_surface=NULL,*Nombre_joueur=NULL,*Nombre_time=NULL;
@@ -974,11 +938,8 @@ void menu_game()
     SDL_Color couleur={0,255,255};
     SDL_Rect position,position_jouer,positionArrow;
     SDL_Event event;
-    int i,j,cpt=1,id_courant;
+    int i,cpt=1,id_courant;
 
-
-    //initialisation SDl
-    myGame.screen = initialisation_sdl();
     //background interface
     menu = SDL_LoadBMP("img/background_menu.bmp");
     position.x = 0;
@@ -1049,15 +1010,12 @@ void menu_game()
     SDL_FreeSurface(menu_surface);
 
 
-
-
      //initialisation du bouton jouer
     myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",18);
     menu = TTF_RenderText_Blended(myGame.police,"PLAY",couleurBlanche);
     TTF_CloseFont(myGame.police);
 
     menu_surface=SDL_LoadBMP("img/play_bleu.bmp");
-
 
         //position du text dans play_surface
     position_jouer.x = (menu_surface->w-menu->w)/2;
@@ -1136,17 +1094,12 @@ void menu_game()
     SDL_FreeSurface(surface_Nombre_joueur);
     myGame.nbr_joueur=1;
 
-
-
-
-
     menu = SDL_LoadBMP("img/time.bmp");
     SDL_SetColorKey(menu, SDL_SRCCOLORKEY, SDL_MapRGB(menu->format, 255, 255, 255));
     position.x=TAILLE_CASE*3-40;
     position.y=290+TAILLE_CASE-10;
     SDL_BlitSurface(menu, NULL, myGame.screen,&position);
     SDL_FreeSurface(menu);
-
 
     surface_Nombre_time=SDL_LoadBMP("img/surface_time.bmp");
     Nombre_time= TTF_RenderText_Blended(myGame.police,"1:00",couleur);
@@ -1161,12 +1114,9 @@ void menu_game()
     SDL_FreeSurface(surface_Nombre_time);
     myGame.nbr_seconde=60;
 
-
-
     SDL_EnableUNICODE(1);
 
     //boucle principale
-    myGame.quitter=false;
     while(!myGame.quitter)
     {
 
@@ -1253,7 +1203,7 @@ void menu_game()
                 if( (event.button.x >= 32) && (event.button.x<= 32+95)
                    && (event.button.y >= 12) && (event.button.y<= 12+15)
                    ){
-                       afficher_score_board_graphics(1,1,-1);
+                       afficher_score_board_graphics(1,60,-1);
                    }
                 //clique sur bouton jouer
                 if( (event.button.x >= position_jouer.x) && (event.button.x<= position_jouer.x+4*TAILLE_CASE-30)
@@ -1268,7 +1218,7 @@ void menu_game()
                         initialisation_game();
                         TTF_CloseFont(myGame.police);
 
-            myGame.nbr_seconde=1;
+
                         //allocation nombre de joueur soit 1 seul joueur ou 2 joueur
                         myGame.joueur = Malloc(myGame.nbr_joueur,Joueur*);
                         for(i=0 ; i < myGame.nbr_joueur ; i++)
@@ -1315,7 +1265,10 @@ void menu_game()
                                 Score_board record;
                                 record.id_partie = id_courant;
                                 strcpy(record.nom_joueur,myGame.joueur[0]->nom);
+                                if(myGame.nbr_joueur==1)
                                 strcpy(record.vs,"solo");
+                            	else
+                                strcpy(record.vs,myGame.joueur[1]->nom);
                                 record.score.nb_mots=0;
                                 record.score.nb_points=0;
                                 record.score.teteMots=NULL;
@@ -1328,21 +1281,22 @@ void menu_game()
                                     inserer_mot(&record.score,mot_temp->info->mot);
                                     mot_temp=mot_temp->suivant;
                                 }
-                                
-                                afficher_resultat(record);
+
+                                if(myGame.nbr_joueur==1 || myGame.joueur[0]->score->nb_points > myGame.joueur[1]->score->nb_points)
+                                	afficher_resultat(record);
+                                else
+                                {
+                                	Score_board adv = information_adversaire(record.vs,record.id_partie);
+                                	afficher_resultat(adv);
+                                }
                             }
 
                    }
 
 
-
-
-
                    if( (event.button.x >= positionArrow.x) && (event.button.x<= positionArrow.x+TAILLE_CASE-35)
                    && (event.button.y >= positionArrow.y) && (event.button.y<= positionArrow.y+TAILLE_CASE-35)
                    ){
-
-
 
                             myGame.police = initialisation_ttf("fonts/neuropol x rg.ttf",22);
                             surface_Nombre_joueur=SDL_LoadBMP("img/surface_nombre.bmp");
@@ -1357,8 +1311,6 @@ void menu_game()
                             SDL_BlitSurface(surface_Nombre_joueur,NULL,myGame.screen,&position);
                             SDL_FreeSurface(surface_Nombre_joueur);
                             myGame.nbr_joueur=1;
-
-
 
                    }
 
@@ -1432,6 +1384,7 @@ void menu_game()
                     if(event.button.x >= 2*355/3  && event.button.y >= 0 && event.button.x <= 2*355/3+355/3 && event.button.y <=45){
 
                         affiche_help();
+                        menu_game();
                    }
 
             break;
@@ -1440,7 +1393,9 @@ void menu_game()
             break;
         }
 
+        if(myGame.quitter==false)
         SDL_Flip(myGame.screen);
+
     }
 
     //liberation
@@ -1448,40 +1403,25 @@ void menu_game()
     //TTF_CloseFont(myGame.police);
     TTF_Quit();
     SDL_Quit();
+    exit(0);
 }
 
 void afficher_resultat(Score_board record)
 {
-
-
-    Joueur *nvJoueur = NULL;
     SDL_Event event;
-    SDL_Surface *input_text,*nom_text;
-    SDL_Surface *input_box;
-    SDL_Surface *play=NULL;
-    SDL_Surface *play_surface=NULL;
-    SDL_Rect position,position_relatif,position_nom_text;
-    SDL_Rect position_input_box;
-    SDL_Rect position_play;
-    SDL_Rect position_temp;
+    SDL_Surface *plateau_mot;
+    SDL_Rect position;
 
 
     //requires for score board
-    int i;
-    char formatage_des_scores[10][500],time[10];
-    Tab_Score_board records;
-    SDL_Surface *record_surface,*fleche_droite,*fleche_gauche,*surface_Nombre_time,*Nombre_time;
-    SDL_Color couleurBlanche = {255, 255, 255};
+    SDL_Surface *fleche_gauche;
     SDL_Color couleurJaune = {255, 255, 0};
     SDL_Rect positionArrow_left;
-    SDL_Rect positionArrow_right;
-    SDL_Rect positionArrow_left_time,positionArrow_right_time;
     char header_mot[50];
     SDL_Surface *header=NULL,*header_surface=NULL,*image_background=NULL;
     SDL_Color couleurNoire = {0,0,0};
-    SDL_Color couleurBleu = {65,105,225};
-    int width_voir,height_voir;
     SDL_Surface *chaine=NULL;
+    int partie=0;
 
     //1 background
     image_background = SDL_LoadBMP("img/background_joueur1.bmp");
@@ -1496,7 +1436,6 @@ void afficher_resultat(Score_board record)
     SDL_SetAlpha(image_background, SDL_SRCALPHA, 200);
     SDL_BlitSurface(image_background, NULL, myGame.screen,&position);
     SDL_FreeSurface(image_background);
-
 
     myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",15);
     header_surface=SDL_CreateRGBSurface(SDL_HWSURFACE,WIDTH_SCREEN,50,32,0,0,0,0);
@@ -1541,9 +1480,15 @@ void afficher_resultat(Score_board record)
     SDL_BlitSurface(header_surface, NULL, myGame.screen,&position);
     SDL_FreeSurface(header_surface);
 
-    //si un seul joueur
-    if(strcmp(record.vs,"solo")==0)
-    {
+
+    //bouton retour
+    fleche_gauche = SDL_LoadBMP("img/leftback.bmp");
+    SDL_SetColorKey(fleche_gauche, SDL_SRCCOLORKEY, SDL_MapRGB(fleche_gauche->format, 255, 255, 255));
+    positionArrow_left.x = 11;
+    positionArrow_left.y = 50;
+    SDL_BlitSurface(fleche_gauche,NULL,myGame.screen,&positionArrow_left);
+    //SDL_FreeSurface(fleche_gauche);
+
         myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",15);
         //nom
         strcpy(header_mot,"player: ");
@@ -1564,13 +1509,64 @@ void afficher_resultat(Score_board record)
 
 
         TTF_CloseFont(myGame.police);
-    }
-    else //si deux joueur
-    {
 
+    //si deux  joueurs
+    if(strcmp(record.vs,"solo")!=0)
+    {
+        Score_board adv=information_adversaire(record.vs,record.id_partie);
+        if(record.score.nb_points > adv.score.nb_points)
+        {
+             //victoire
+            chaine = SDL_LoadBMP("img/victoire.bmp");
+            position.x=(myGame.screen->w-chaine->w)/2;
+            position.y=57;
+            SDL_BlitSurface(chaine,NULL,myGame.screen,&position);
+            SDL_FreeSurface(chaine);
+        }
+        else if(record.score.nb_points == adv.score.nb_points){
+
+            //agalité
+            myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",15);
+            chaine = TTF_RenderText_Blended(myGame.police,"Egalité",couleurJaune);
+            position.x=(myGame.screen->w-chaine->w)/2;
+            position.y=57;
+            SDL_BlitSurface(chaine,NULL,myGame.screen,&position);
+            SDL_FreeSurface(chaine);
+            TTF_CloseFont(myGame.police);
+        }
+
+        myGame.police = initialisation_ttf("fonts/ComicNeueSansID.ttf",15);
+        chaine = TTF_RenderText_Blended(myGame.police,record.vs,couleurJaune);
+        position.x = 215;
+        position.y = 529;
+        SDL_BlitSurface(chaine,NULL,myGame.screen,&position);
+        //SDL_FreeSurface(chaine);
+        TTF_CloseFont(myGame.police);
     }
+
+    //down and up
+    plateau_mot = SDL_LoadBMP("img/up.bmp");
+    SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+    position.x=45;
+    position.y=280;
+    SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+    SDL_FreeSurface(plateau_mot);
+    plateau_mot = SDL_LoadBMP("img/down.bmp");
+    SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+    position.x=45;
+    position.y=280+164-20;
+    SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+    SDL_FreeSurface(plateau_mot);
+    plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+    SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+    position.x=(myGame.screen->w-30)/2-50;
+    position.y=280;
+    SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+    SDL_FreeSurface(plateau_mot);
+    afficher_cinq_mots(record.score,partie);
 
     SDL_Flip(myGame.screen);
+
     while(!myGame.quitter)
     {
         SDL_WaitEvent(&event);
@@ -1582,6 +1578,54 @@ void afficher_resultat(Score_board record)
 
             case SDL_MOUSEBUTTONDOWN:
 
+                 //clique sur l'autre joueur
+                if( strcmp(record.vs,"solo")!=0 && (event.button.x >= 215) && (event.button.x<= 215+chaine->w)
+                   && (event.button.y >= 529) && (event.button.y<= 529+chaine->h)
+                   ){
+                        //liberation
+                        SDL_FreeSurface(fleche_gauche);
+                        SDL_FreeSurface(chaine);
+                        Score_board adv = information_adversaire(record.vs,record.id_partie);
+                        afficher_resultat(adv);
+
+                   }
+
+                //clique sur retour fleche
+                if( (event.button.x >= 11) && (event.button.x<= 11+fleche_gauche->w)
+                   && (event.button.y >= 50) && (event.button.y<= 50+fleche_gauche->h)
+                   ){
+
+                    //liberation
+                    SDL_FreeSurface(fleche_gauche);
+                    //TTF_CloseFont(myGame.police);
+                    menu_game();
+                }
+
+                 if(event.button.x >= 45 &&  event.button.y >=280 && event.button.x <= 45+25 && event.button.y <= 280+25 && partie>0){
+                        partie--;
+                        plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+                        SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+                         position.x=(myGame.screen->w-30)/2-50;
+                         position.y=280;
+                        SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+                        SDL_FreeSurface(plateau_mot);
+                        afficher_cinq_mots(record.score,partie);
+
+                    }else{
+
+                         if(event.button.x >= 45 &&  event.button.y >=280+164-20 && event.button.x <= 45+25 && event.button.y <= 280+164-20+25 && partie*5 < record.score.nb_mots){
+                        partie++;
+                        if(partie*5 <   record.score.nb_mots){
+                        plateau_mot = SDL_LoadBMP("img/plateau_mots.bmp");
+                        SDL_SetColorKey(plateau_mot, SDL_SRCCOLORKEY, SDL_MapRGB(plateau_mot->format, 0, 0, 0));
+                         position.x=(myGame.screen->w-30)/2-50;
+                         position.y=280;
+                        SDL_BlitSurface(plateau_mot,NULL,myGame.screen,&position);
+                        SDL_FreeSurface(plateau_mot);
+                        afficher_cinq_mots(record.score,partie);
+                    }
+                }
+            }
 
              break;
 
